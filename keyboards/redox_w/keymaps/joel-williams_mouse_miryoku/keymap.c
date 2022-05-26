@@ -29,34 +29,31 @@ enum custom_keycodes {
 #define LALT_S LALT_T(KC_S)
 #define LCTL_D LCTL_T(KC_D)
 #define LSFT_F LSFT_T(KC_F)
-
 #define RSFT_J RSFT_T(KC_J)
-#define RCTL_K RCTL_T(KC_K)
-#define LALT_L LALT_T(KC_L)
+#define RCTL_K RCTL_T(KC_K),
+#define LALT_L LALT_T(KC_L),
 #define RGUI_SC GUI_T(KC_SCLN)
-
 // #define LT(BUTTON, KC_Z)
 #define RALT_X ALGR_T(KC_X)
 #define RALT_DT ALGR_T(KC_DOT)
-
-//#define LT(BUTTON, KC_SLSH)
-
+#define LT(BUTTON, KC_SLSH)
 #define MED_ESC LT(_MEDIA, KC_ESC)
 #define NAV_SPC LT(_NAV, KC_SPC)
 #define MOU_TAB LT(_MOUSE, KC_TAB)
-
 #define SYM_ENT LT(_SYM, KC_ENT)
 #define NUM_BSP LT(_NUM, KC_BSPC)
 #define FUN_DEL LT(_FUN, KC_DEL)
 
+#define SYM_L   MO(_SYMB)
 
-#define SYM_L   MO(_SYM)
 #define KC_ALAS LALT_T(KC_PAST)
 #define KC_CTPL LCTL_T(KC_BSLS)
+
 #define KC_NAGR LT(_NAV, KC_GRV)
 #define KC_NAMI LT(_NAV, KC_MINS)
-#define KC_ADEN LT(_FUN, KC_END)
-#define KC_ADPU LT(_FUN, KC_PGUP)
+
+#define KC_ADEN LT(_ADJUST, KC_END)
+#define KC_ADPU LT(_ADJUST, KC_PGUP)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -74,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
-  [_SYM] = LAYOUT(
+  [_LHAND] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      _______ ,KC_F1   ,KC_F2   ,KC_F3   ,KC_F4   ,KC_F5   ,                                            KC_F6   ,KC_F7   ,KC_F8   ,KC_F9   ,KC_F10  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -88,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
-  [_NAV] = LAYOUT(
+  [_MEDIA] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -102,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
-  [_FUN] = LAYOUT(
+  [_NAV] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,KC_F1   ,KC_F2   ,KC_F3   ,KC_F4   ,KC_F5   ,                                            KC_F6   ,KC_F7   ,KC_F8   ,KC_F9   ,KC_F10  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
