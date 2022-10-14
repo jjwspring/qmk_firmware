@@ -68,7 +68,7 @@ enum custom_keycodes {
 
 
 enum {
-  U_SP = 0
+  U_SP = 0,
   DOT
 };
 qk_tap_dance_action_t tap_dance_actions[] = {
