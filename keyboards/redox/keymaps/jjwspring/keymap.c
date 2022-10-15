@@ -13,6 +13,7 @@
 #define _NUM 6
 #define _FUN 7
 #define _RHAND 8
+#define _RNAV 9
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -23,7 +24,8 @@ enum custom_keycodes {
   SYM,
   NUM,
   FUN,
-  RHAND
+  RHAND,
+  RNAV
 };
 
 // Shortcut to make keymap more readable
