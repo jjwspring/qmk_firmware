@@ -5,15 +5,20 @@
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
 #define _QWERTY 0
-#define _LHAND 1
-#define _MEDIA 2
-#define _NAV 3
-#define _MOUSE 4
-#define _SYM 5
-#define _NUM 6
-#define _FUN 7
-#define _RHAND 8
-#define _RNAV 9
+#define _COLEMAK 1
+#define _LHAND 2
+#define _MEDIA 3
+#define _NAV 4
+#define _MOUSE 5
+#define _SYM 6
+#define _NUM 7
+#define _FUN 8
+#define _RHAND 9
+#define _RNAV 10
+
+#define QWERTY_ DF(_QWERTY)
+#define COLEMAK DF(_COLEMAK)
+
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -33,10 +38,21 @@ enum custom_keycodes {
 #define LALT_S LALT_T(KC_S)
 #define LCTL_D LCTL_T(KC_D)
 #define LSFT_F LSFT_T(KC_F)
+
 #define RSFT_J RSFT_T(KC_J)
 #define RCTL_K RCTL_T(KC_K)
 #define LALT_L LALT_T(KC_L)
 #define RGUI_SC RGUI_T(KC_SCLN)
+
+#define LALT_R LALT_T(KC_R)
+#define LCTL_S LCTL_T(KC_S)
+#define LSHFT_T LSFT_T(KC_T)
+
+#define RSFT_N RSFT_T(KC_N)
+#define RCTL_E RCTL_T(KC_E)
+#define LALT_I LALT_T(KC_I)
+#define RGUI_O RGUI_T(KC_O)
+
 // #define LT(BUTTON, KC_Z)
 #define RALT_X ALGR_T(KC_X)
 #define RALT_DT ALGR_T(KC_DOT)
@@ -75,11 +91,13 @@ enum custom_keycodes {
 
 enum {
   U_SP = 0,
-  DOT
+  DOT,
+  CLN
 };
 qk_tap_dance_action_t tap_dance_actions[] = {
   [U_SP] = ACTION_TAP_DANCE_DOUBLE(KC_UNDS, KC_SPC),
-  [DOT] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_COMM)
+  [DOT] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_COMM),
+  [CLN] = ACTION_TAP_DANCE_DOUBLE(KC_COLON, KC_SEMICOLON)
 };
 
 
@@ -95,7 +113,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSFT ,KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,TG(_NAV),TG_LHND ,        KC_HOME ,TG(_NUM),KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSFT ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     KC_LCTL ,KC_LCAP ,CAPSWRD ,KC_APP  ,     MED_ESC ,    NAV_SPC ,MOU_TAB ,        SYM_ENT ,NUM_BSP ,    FUN_DEL ,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
+     KC_LCTL ,COLEMAK ,CAPSWRD ,KC_APP  ,     MED_ESC ,    NAV_SPC ,MOU_TAB ,        SYM_ENT ,NUM_BSP ,    FUN_DEL ,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
+
+    [_COLEMAK] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     KC_NAGR ,KC_1    ,KC_2    ,KC_3    ,KC_4    ,KC_5    ,                                            KC_6    ,KC_7    ,KC_8    ,KC_9    ,KC_0    ,KC_NAMI ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_TAB  ,KC_Q    ,KC_W    ,KC_F    ,KC_P    ,KC_B    ,DM_REC1 ,                          DM_REC2 ,KC_J    ,KC_L    ,KC_U    ,KC_Y    ,TD(CLN) ,KC_EQL  ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     CAPSWRD ,LGUI_A  ,LALT_R  ,LCTL_S  ,LSHFT_T ,KC_G    ,DM_PLY1 ,                          DM_PLY2 ,KC_M    ,RSFT_N  ,RCTL_E  ,LALT_I  ,RGUI_O  ,KC_QUOT ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_LSFT ,KC_Z    ,KC_X    ,KC_C    ,KC_D    ,KC_V    ,TG(_NAV),TG_LHND ,        KC_HOME ,TG(_NUM),KC_K    ,KC_H    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSFT ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     KC_LCTL ,QWERTY_ ,CAPSWRD ,KC_APP  ,     MED_ESC ,    NAV_SPC ,MOU_TAB ,        SYM_ENT ,NUM_BSP ,    FUN_DEL ,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
