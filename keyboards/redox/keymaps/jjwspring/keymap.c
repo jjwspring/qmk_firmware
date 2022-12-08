@@ -36,27 +36,27 @@ enum custom_keycodes {
 };
 
 // Shortcut to make keymap more readable
-#define LGUI_A LGUI_T(KC_A)
-#define LALT_S LALT_T(KC_S)
-#define LCTL_D LCTL_T(KC_D)
-#define LSFT_F LSFT_T(KC_F)
+#define LGUI_A  LGUI_T(KC_A)
+#define LALT_S  LALT_T(KC_S)
+#define LCTL_D  LCTL_T(KC_D)
+#define LSFT_F  LSFT_T(KC_F)
 
-#define RSFT_J RSFT_T(KC_J)
-#define RCTL_K RCTL_T(KC_K)
-#define LALT_L LALT_T(KC_L)
+#define RSFT_J  RSFT_T(KC_J)
+#define RCTL_K  RCTL_T(KC_K)
+#define LALT_L  LALT_T(KC_L)
 #define RGUI_SC RGUI_T(KC_SCLN)
 
-#define LALT_R LALT_T(KC_R)
-#define LCTL_S LCTL_T(KC_S)
+#define LALT_R  LALT_T(KC_R)
+#define LCTL_S  LCTL_T(KC_S)
 #define LSHFT_T LSFT_T(KC_T)
 
-#define RSFT_N RSFT_T(KC_N)
-#define RCTL_E RCTL_T(KC_E)
-#define LALT_I LALT_T(KC_I)
-#define RGUI_O RGUI_T(KC_O)
+#define RSFT_N  RSFT_T(KC_N)
+#define RCTL_E  RCTL_T(KC_E)
+#define LALT_I  LALT_T(KC_I)
+#define RGUI_O  RGUI_T(KC_O)
 
 // #define LT(BUTTON, KC_Z)
-#define RALT_X ALGR_T(KC_X)
+#define RALT_X  ALGR_T(KC_X)
 #define RALT_DT ALGR_T(KC_DOT)
 // #define LT(BUTTON, KC_SLSH)
 #define MED_ESC LT(_MEDIA, KC_ESC)
@@ -68,8 +68,8 @@ enum custom_keycodes {
 #define FUN_DEL LT(_FUN, KC_DEL)
 #define RNM_ESC LT(_RNUM, KC_ESC)
 
-#define TO_BASE  TO(0)
-#define TO_LHND  TO(_LHAND)
+#define TO_BASE TO(0)
+#define TO_LHND TO(_LHAND)
 
 #define SYM_L   MO(_SYM)
 
@@ -209,11 +209,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUM] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     KC_DEL  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,KC_ASTR ,KC_7    ,KC_8    ,KC_9    ,KC_PLUS ,_______ ,                          _______ ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     KC_BSPC ,KC_ASTR ,KC_7    ,KC_8    ,KC_9    ,KC_PLUS ,_______ ,                          _______ ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,KC_SLSH ,KC_4    ,KC_5    ,KC_6    ,KC_MINS ,_______ ,                          _______ ,XXXXXXX ,KC_RSFT ,KC_RCTL ,KC_LALT ,KC_RGUI ,XXXXXXX ,
+     KC_ENT  ,KC_SLSH ,KC_4    ,KC_5    ,KC_6    ,KC_MINS ,_______ ,                          _______ ,XXXXXXX ,KC_RSFT ,KC_RCTL ,KC_LALT ,KC_RGUI ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_CIRC ,KC_1    ,KC_2    ,KC_3    ,KC_EQL  ,TO(_NAV),XXXXXXX ,        TO_BASE ,TO_BASE ,XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_RALT ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
