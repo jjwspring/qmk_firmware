@@ -94,6 +94,17 @@ enum custom_keycodes {
 
 #define KC_DQOT LSFT(KC_2)
 
+#define APP_1 LGUI(KC_1)
+#define APP_2 LGUI(KC_2)
+#define APP_3 LGUI(KC_3)
+#define APP_4 LGUI(KC_4)
+#define APP_5 LGUI(KC_5)
+#define APP_6 LGUI(KC_6)
+#define APP_7 LGUI(KC_7)
+#define APP_8 LGUI(KC_8)
+#define APP_9 LGUI(KC_9)
+#define APP_0 LGUI(KC_0)
+
 
 enum {
   U_SP = 0,
@@ -125,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_COLEMAK] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_NAGR ,KC_1    ,KC_2    ,KC_3    ,KC_4    ,KC_5    ,                                            KC_6    ,KC_7    ,KC_8    ,KC_9    ,KC_0    ,TG_SAFE ,
+     KC_NAGR ,APP_1   ,APP_2   ,APP_3   ,APP_4   ,APP_5   ,                                            APP_6   ,APP_7   ,APP_8   ,APP_9   ,APP_0   ,TG_SAFE ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB  ,KC_Q    ,KC_W    ,KC_F    ,KC_P    ,KC_B    ,DM_REC1 ,                          DM_REC2 ,KC_J    ,KC_L    ,KC_U    ,KC_Y    ,TD(CLN) ,KC_EQL  ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
