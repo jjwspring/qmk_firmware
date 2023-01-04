@@ -23,16 +23,27 @@
 
 
 enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  LHAND,
-  MEDIA,
-  NAV,
-  MOUSE,
-  SYM,
-  NUM,
-  FUN,
-  RHAND,
-  RNAV
+//  QWERTY = SAFE_RANGE,
+//  LHAND,
+//  MEDIA,
+//  NAV,
+//  MOUSE,
+//  SYM,
+//  NUM,
+//  FUN,`
+//  RHAND,
+//  RNAV
+  REPEAT = SAFE_RANGE,
+  APP_1,
+  APP_2,
+  APP_3,
+  APP_4,
+  APP_5,
+  APP_6,
+  APP_7,
+  APP_8,
+  APP_9,
+  APP_0
 };
 
 // Shortcut to make keymap more readable
@@ -94,16 +105,16 @@ enum custom_keycodes {
 
 #define KC_DQOT LSFT(KC_2)
 
-#define APP_1 LGUI(KC_1)
-#define APP_2 LGUI(KC_2)
-#define APP_3 LGUI(KC_3)
-#define APP_4 LGUI(KC_4)
-#define APP_5 LGUI(KC_5)
-#define APP_6 LGUI(KC_6)
-#define APP_7 LGUI(KC_7)
-#define APP_8 LGUI(KC_8)
-#define APP_9 LGUI(KC_9)
-#define APP_0 LGUI(KC_0)
+//#define APP_1 LGUI(KC_1)
+//#define APP_2 LGUI(KC_2)
+//#define APP_3 LGUI(KC_3)
+//#define APP_4 LGUI(KC_4)
+//#define APP_5 LGUI(KC_5)
+//#define APP_6 LGUI(KC_6)
+//#define APP_7 LGUI(KC_7)
+//#define APP_8 LGUI(KC_8)
+//#define APP_9 LGUI(KC_9)
+//#define APP_0 LGUI(KC_0)
 
 
 enum {
@@ -116,6 +127,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
   [DOT] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_COMM),
   [CLN] = ACTION_TAP_DANCE_DOUBLE(KC_COLON, KC_SEMICOLON)
 };
+
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -142,7 +154,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      CAPSWRD ,LGUI_A  ,LALT_R  ,LCTL_S  ,LSHFT_T ,KC_G    ,DM_PLY1 ,                          DM_PLY2 ,KC_M    ,RSFT_N  ,RCTL_E  ,LALT_I  ,RGUI_O  ,KC_QUOT ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT ,KC_Z    ,KC_X    ,KC_C    ,KC_D    ,KC_V    ,TG(_NAV),TG_LHND ,        XXXXXXX ,TG(_NUM),KC_K    ,KC_H    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSFT ,
+     KC_LSFT ,KC_Z    ,KC_X    ,KC_C    ,KC_D    ,KC_V    ,TG(_NAV),TG_LHND ,        REPEAT  ,TG(_NUM),KC_K    ,KC_H    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSFT ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      KC_LCTL ,KC_LGUI ,QWERTY_ ,KC_APP  ,     MED_ESC ,    NAV_SPC ,MOU_TAB ,        SYM_ENT ,NUM_BSP ,    FUN_DEL ,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
@@ -164,7 +176,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_LHAND] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_ESC  ,_______ ,_______ ,_______ ,_______ ,_______ ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
+     KC_ESC  ,APP_1   ,APP_2   ,APP_3   ,APP_4   ,APP_5   ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_BSPC ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,                          _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -220,7 +232,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUM] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_DEL  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     KC_DEL  ,_______ ,_______ ,_______ ,_______ ,_______ ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_BSPC ,KC_ASTR ,KC_7    ,KC_8    ,KC_9    ,KC_PLUS ,_______ ,                          _______ ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -234,7 +246,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NAV] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     XXXXXXX ,KC_F1   ,KC_F2   ,KC_F3   ,KC_F4   ,KC_F5   ,                                            KC_F6   ,KC_F7   ,KC_F8   ,KC_F9   ,KC_F10  ,XXXXXXX ,
+     XXXXXXX ,_______ ,_______ ,_______ ,_______ ,_______ ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,RESET   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,_______ ,                          _______ ,REDO    ,PASTE   ,COPY    ,CUT     ,UNDO    ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -262,7 +274,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_RHAND] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_DEL  ,KC_0    ,KC_9    ,KC_8    ,KC_7    ,KC_6    ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
+     KC_DEL  ,APP_0   ,APP_9   ,APP_8   ,APP_7   ,APP_6   ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_BSPC ,TD(CLN) ,KC_Y    ,KC_U    ,KC_L    ,KC_J    ,DM_REC2 ,                          _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -276,7 +288,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
       [_RNAV] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______ ,KC_0    ,KC_9    ,KC_8    ,KC_7    ,KC_6    ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
+     _______ ,APP_0   ,APP_9   ,APP_8   ,APP_7   ,APP_6   ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_BSPC ,UNDO    ,CUT    ,COPY    ,PASTE   ,REDO    ,_______ ,                          _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -290,7 +302,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_RNUM] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______ ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     _______ ,APP_1   ,APP_2   ,APP_3   ,APP_4   ,APP_5   ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_BSPC ,KC_ASTR ,KC_7    ,KC_8    ,KC_9    ,KC_PLUS ,_______ ,                          _______ ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -302,4 +314,102 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   )
 
+};
+
+
+// Used to extract the basic tapping keycode from a dual-role key.
+// Example: GET_TAP_KC(MT(MOD_RSFT, KC_E)) == KC_E
+#define GET_TAP_KC(dual_role_key) dual_role_key & 0xFF
+uint16_t last_keycode = KC_NO;
+uint8_t last_modifier = 0;
+uint16_t pressed_keycode = KC_NO;
+
+void process_repeat_key(uint16_t keycode, const keyrecord_t *record) {
+  if (keycode != REPEAT) {
+    // Early return when holding down a pure layer key
+    // to retain modifiers
+    switch (keycode) {
+      case QK_DEF_LAYER ... QK_DEF_LAYER_MAX:
+      case QK_MOMENTARY ... QK_MOMENTARY_MAX:
+      case QK_LAYER_MOD ... QK_LAYER_MOD_MAX:
+      case QK_ONE_SHOT_LAYER ... QK_ONE_SHOT_LAYER_MAX:
+      case QK_TOGGLE_LAYER ... QK_TOGGLE_LAYER_MAX:
+      case QK_TO ... QK_TO_MAX:
+      case QK_LAYER_TAP_TOGGLE ... QK_LAYER_TAP_TOGGLE_MAX:
+      case QK_MODS ... QK_MODS_MAX:
+        return;
+    }
+    if (record->event.pressed) {
+      last_modifier = get_mods() | get_oneshot_mods();
+      switch (keycode) {
+        case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
+        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+          last_keycode = GET_TAP_KC(keycode);
+          break;
+        default:
+          last_keycode = keycode;
+          break;
+        }
+    }
+  } else { // keycode == REPEAT
+    if (record->event.pressed) {
+      pressed_keycode = last_keycode;
+      register_mods(last_modifier);
+      register_code16(pressed_keycode);
+      unregister_mods(last_modifier);
+    } else {
+      unregister_code16(pressed_keycode);
+    }
+  }
+}
+
+
+void app_switch(uint16_t keycode, const keyrecord_t *record) {
+    if (record->event.pressed) {
+      register_code(KC_LGUI);
+      tap_code(keycode);
+      // Ensures repeat key only sends the relevant number
+      last_keycode = keycode;
+      last_modifier = 0;
+    } else {
+      unregister_code(KC_LGUI);
+    }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case APP_1:
+          app_switch(KC_1, record);
+          break;
+        case APP_2:
+          app_switch(KC_2, record);
+          break;
+        case APP_3:
+          app_switch(KC_3, record);
+          break;
+        case APP_4:
+          app_switch(KC_4, record);
+          break;
+        case APP_5:
+          app_switch(KC_5, record);
+          break;
+        case APP_6:
+          app_switch(KC_6, record);
+          break;
+        case APP_7:
+          app_switch(KC_7, record);
+          break;
+        case APP_8:
+          app_switch(KC_8, record);
+          break;
+        case APP_9:
+          app_switch(KC_9, record);
+          break;
+        case APP_0:
+          app_switch(KC_0, record);
+          break;
+        default:
+          process_repeat_key(keycode, record);
+    }
+    return true;
 };
