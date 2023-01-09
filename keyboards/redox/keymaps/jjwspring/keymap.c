@@ -79,7 +79,7 @@ enum custom_keycodes {
 #define FUN_DEL LT(_FUN, KC_DEL)
 #define RNM_ESC LT(_RNUM, KC_ESC)
 
-#define NUM_N   LT(_NUM, KC_N)
+#define SYM_N   LT(_SYM, KC_N)
 #define MOU_T   LT(_MOUSE, KC_T)
 
 #define TO_BASE TO(0)
@@ -132,6 +132,15 @@ qk_tap_dance_action_t tap_dance_actions[] = {
   [CLN] = ACTION_TAP_DANCE_DOUBLE(KC_COLON, KC_SEMICOLON)
 };
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case RGUI_O:
+        case LGUI_A:
+            return TAPPING_TERM + 100;
+        default:
+            return TAPPING_TERM;
+    }
+}
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -156,7 +165,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB  ,KC_ESC  ,KC_W    ,KC_F    ,KC_P    ,KC_B    ,DM_REC1 ,                          DM_REC2 ,KC_J    ,KC_L    ,KC_U    ,KC_Y    ,KC_BSPC ,KC_EQL  ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     CAPSWRD ,LGUI_A  ,LALT_R  ,LCTL_S  ,MOU_T   ,KC_G    ,DM_PLY1 ,                          DM_PLY2 ,KC_M    ,NUM_N   ,RCTL_E  ,LALT_I  ,RGUI_O  ,KC_QUOT ,
+     CAPSWRD ,LGUI_A  ,LALT_R  ,LCTL_S  ,MOU_T   ,KC_G    ,DM_PLY1 ,                          DM_PLY2 ,KC_M    ,SYM_N   ,RCTL_E  ,LALT_I  ,RGUI_O  ,KC_QUOT ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSFT ,KC_Z    ,KC_X    ,KC_C    ,KC_D    ,KC_V    ,TG(_NAV),TG_LHND ,        XXXXXXX ,TG(_NUM),KC_K    ,KC_H    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSFT ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
@@ -320,11 +329,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-#define COMBO_COUNT 4
-
-const uint16_t PROGMEM CMBO_Q[] = {KC_TAB, KC_W, COMBO_END};
+const uint16_t PROGMEM CMBO_Q[] = {KC_ESC, KC_W, COMBO_END};
 const uint16_t PROGMEM CMBO_SCLN[] = {KC_BSPC, KC_Y, COMBO_END};
-const uint16_t PROGMEM CMBO_ENT[] = {NUM_N, RCTL_E, COMBO_END};
+const uint16_t PROGMEM CMBO_ENT[] = {SYM_N, RCTL_E, COMBO_END};
 const uint16_t PROGMEM CMBO_TAB[] = {MOU_T, LCTL_S, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
