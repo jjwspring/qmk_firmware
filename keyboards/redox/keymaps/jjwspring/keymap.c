@@ -102,6 +102,7 @@ enum custom_keycodes {
 #define REDO    LCTL(KC_Y)
 #define CTL_LFT LCTL(KC_LEFT)
 #define CTL_RGT LCTL(KC_RGHT)
+#define OS_SHFT OSM(MOD_LSFT)
 
 #define KC_DQOT LSFT(KC_2)
 
@@ -150,13 +151,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_NAGR ,APP_1   ,APP_2   ,APP_3   ,APP_4   ,APP_5   ,                                            APP_6   ,APP_7   ,APP_8   ,APP_9   ,APP_0   ,TG_SAFE ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TAB  ,KC_Q    ,KC_W    ,KC_F    ,KC_P    ,KC_B    ,DM_REC1 ,                          DM_REC2 ,KC_J    ,KC_L    ,KC_U    ,KC_Y    ,TD(CLN) ,KC_EQL  ,
+     KC_TAB  ,KC_ESC  ,KC_W    ,KC_F    ,KC_P    ,KC_B    ,DM_REC1 ,                          DM_REC2 ,KC_J    ,KC_L    ,KC_U    ,KC_Y    ,KC_BSPC ,KC_EQL  ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      CAPSWRD ,LGUI_A  ,LALT_R  ,LCTL_S  ,LSHFT_T ,KC_G    ,DM_PLY1 ,                          DM_PLY2 ,KC_M    ,RSFT_N  ,RCTL_E  ,LALT_I  ,RGUI_O  ,KC_QUOT ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSFT ,KC_Z    ,KC_X    ,KC_C    ,KC_D    ,KC_V    ,TG(_NAV),TG_LHND ,        REPEAT  ,TG(_NUM),KC_K    ,KC_H    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSFT ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     KC_LCTL ,KC_LGUI ,QWERTY_ ,KC_APP  ,     MED_ESC ,    NAV_SPC ,MOU_TAB ,        SYM_ENT ,NUM_BSP ,    FUN_DEL ,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
+     KC_LCTL ,KC_LGUI ,QWERTY_ ,KC_APP  ,     MED_ESC ,    NAV_SPC ,OS_SHFT ,        REPEAT  ,NUM_BSP ,    FUN_DEL ,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -314,6 +315,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   )
 
+};
+
+const uint16_t PROGMEM CMBO_Q[] = {KC_TAB, KC_W, COMBO_END};
+const uint16_t PROGMEM CMBO_SCLN[] = {KC_BSPC, KC_Y, COMBO_END};
+combo_t key_combos[COMBO_COUNT] = {
+    COMBO(CMBO_Q, KC_Q),
+    COMBO(CMBO_SCLN, KC_SCLN)
 };
 
 
