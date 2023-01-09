@@ -79,6 +79,9 @@ enum custom_keycodes {
 #define FUN_DEL LT(_FUN, KC_DEL)
 #define RNM_ESC LT(_RNUM, KC_ESC)
 
+#define NUM_N   LT(_NUM, KC_N)
+#define MOU_T   LT(_MOUSE, KC_T)
+
 #define TO_BASE TO(0)
 #define TO_LHND TO(_LHAND)
 
@@ -153,9 +156,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB  ,KC_ESC  ,KC_W    ,KC_F    ,KC_P    ,KC_B    ,DM_REC1 ,                          DM_REC2 ,KC_J    ,KC_L    ,KC_U    ,KC_Y    ,KC_BSPC ,KC_EQL  ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     CAPSWRD ,LGUI_A  ,LALT_R  ,LCTL_S  ,LSHFT_T ,KC_G    ,DM_PLY1 ,                          DM_PLY2 ,KC_M    ,RSFT_N  ,RCTL_E  ,LALT_I  ,RGUI_O  ,KC_QUOT ,
+     CAPSWRD ,LGUI_A  ,LALT_R  ,LCTL_S  ,MOU_T   ,KC_G    ,DM_PLY1 ,                          DM_PLY2 ,KC_M    ,NUM_N   ,RCTL_E  ,LALT_I  ,RGUI_O  ,KC_QUOT ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT ,KC_Z    ,KC_X    ,KC_C    ,KC_D    ,KC_V    ,TG(_NAV),TG_LHND ,        REPEAT  ,TG(_NUM),KC_K    ,KC_H    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSFT ,
+     KC_LSFT ,KC_Z    ,KC_X    ,KC_C    ,KC_D    ,KC_V    ,TG(_NAV),TG_LHND ,        XXXXXXX ,TG(_NUM),KC_K    ,KC_H    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSFT ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      KC_LCTL ,KC_LGUI ,QWERTY_ ,KC_APP  ,     MED_ESC ,    NAV_SPC ,OS_SHFT ,        REPEAT  ,NUM_BSP ,    FUN_DEL ,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
@@ -317,12 +320,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+#define COMBO_COUNT 4
+
 const uint16_t PROGMEM CMBO_Q[] = {KC_TAB, KC_W, COMBO_END};
 const uint16_t PROGMEM CMBO_SCLN[] = {KC_BSPC, KC_Y, COMBO_END};
+const uint16_t PROGMEM CMBO_ENT[] = {NUM_N, RCTL_E, COMBO_END};
+const uint16_t PROGMEM CMBO_TAB[] = {MOU_T, LCTL_S, COMBO_END};
+
 combo_t key_combos[COMBO_COUNT] = {
     COMBO(CMBO_Q, KC_Q),
-    COMBO(CMBO_SCLN, KC_SCLN)
+    COMBO(CMBO_SCLN, KC_SCLN),
+    COMBO(CMBO_ENT, KC_ENT),
+    COMBO(CMBO_TAB, KC_TAB)
 };
+// uint16_t COMBO_LEN = ARRAY_SIZE(key_combos);
 
 
 // Used to extract the basic tapping keycode from a dual-role key.
