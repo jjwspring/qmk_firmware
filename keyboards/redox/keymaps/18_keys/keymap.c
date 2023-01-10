@@ -31,6 +31,7 @@ enum custom_keycodes {
 //  RHAND,
 //  RNAV
   REPEAT = SAFE_RANGE,
+  S_ENAV,
   APP_1,
   APP_2,
   APP_3,
@@ -47,13 +48,30 @@ enum custom_keycodes {
 #define A_SFT_2 OSL(_SFT_ALPHA_2)
 #define OS_SFT  OSM(MOD_LSFT)
 
+// Mod taps
 #define CTL_D   LCTL_T(KC_D)
 #define CTL_H   RCTL_T(KC_H)
 #define ALT_G   LALT_T(KC_G)
 #define ALT_U   LALT_T(KC_U)
 #define GUI_L   LGUI_T(KC_L)
 #define GUI_O   RGUI_T(KC_O)
-
+#define CTL_M   LCTL_T(KC_M)
+#define CTL_F   RCTL_T(KC_F)
+#define ALT_W   LALT_T(KC_W)
+#define ALT_COM LALT_T(KC_COMM)
+#define GUI_V   LGUI_T(KC_V)
+#define GUI_DOT RGUI_T(KC_DOT)
+// Layer taps
+#define NUM_I   LT(_NUM. KC_I)
+#define SYM2_S  LT(_SYM_2, KC_S)
+#define SYM1_R  LT(_SYM_1, KC_R)
+#define NAV_T   LT(_NAV, KC_T)
+#define NAV_N   LT(_NAV, KC_N)
+#define SYM1_E  LT(_SYM_1, KC_E)
+#define SYM2_A  LT(_SYM_2, KC_A)
+#define NUM_C   LT(_NUM, KC_C)
+// Layer toggles
+#define TO_ALP1
 
 #define KC_DQOT LSFT(KC_2)
 #define KC_PND  LSFT(KC_3)
@@ -108,11 +126,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,KC_ESC  ,GUI_L   ,ALT_G   ,CTL_D   ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,CTL_H   ,ALT_U   ,GUI_O   ,KC_BSPC ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_TAB  ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_ENT  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,KC_I    ,KC_S    ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_N    ,KC_E    ,KC_A    ,KC_C    ,XXXXXXX ,
+     XXXXXXX ,KC_ESC  ,GUI_L   ,ALT_G   ,CTL_D   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,CTL_H   ,ALT_U   ,GUI_O   ,KC_BSPC ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_TAB  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_ENT  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,NUM_I   ,SYM2_S  ,SYM1_R  ,NAV_T   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,NAV_N   ,SYM1_E  ,SYM2_A  ,NUM_C   ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,REPEAT  ,        A_SFT_2 ,ALPHA_2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
@@ -122,11 +140,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,KC_V    ,KC_W    ,KC_M    ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_F    ,KC_COMM ,KC_DOT  ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,KC_Q    ,KC_J    ,KC_P    ,KC_K    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_B    ,KC_Z    ,KC_X    ,KC_Y    ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,GUI_V   ,ALT_W   ,CTL_M   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,CTL_F   ,ALT_COM ,GUI_DOT ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,KC_Q    ,KC_J    ,KC_P    ,KC_K    ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_B    ,KC_Z    ,KC_X    ,KC_Y    ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    OS_SFT  ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
@@ -165,11 +183,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,SFT_V   ,SFT_W   ,SFT_M   ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,SFT_F   ,KC_QUOT ,KC_DQOT ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,SFT_Q   ,SFT_J   ,SFT_P   ,SFT_K   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,SFT_B   ,SFT_Z   ,SFT_X   ,SFT_Y   ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,SFT_V   ,SFT_W   ,SFT_M   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,SFT_F   ,KC_QUOT ,KC_DQOT ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,SFT_Q   ,SFT_J   ,SFT_P   ,SFT_K   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,SFT_B   ,SFT_Z   ,SFT_X   ,SFT_Y   ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_UNDS ,XXXXXXX ,        REPEAT  ,XXXXXXX ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
@@ -179,7 +197,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,KC_W    ,KC_G    ,KC_D    ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_H    ,KC_U    ,KC_O    ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_I    ,KC_S    ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_N    ,KC_E    ,KC_A    ,KC_C    ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -193,7 +211,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,KC_W    ,KC_G    ,KC_D    ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_H    ,KC_U    ,KC_O    ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_I    ,KC_S    ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_N    ,KC_E    ,KC_A    ,KC_C    ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -207,7 +225,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,KC_W    ,KC_G    ,KC_D    ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_H    ,KC_U    ,KC_O    ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_I    ,KC_S    ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_N    ,KC_E    ,KC_A    ,KC_C    ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -221,13 +239,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,KC_W    ,KC_G    ,KC_D    ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_H    ,KC_U    ,KC_O    ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,KC_I    ,KC_S    ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_N    ,KC_E    ,KC_A    ,KC_C    ,XXXXXXX ,
+     XXXXXXX ,KC_I    ,KC_S    ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_N    ,KC_UP   ,KC_A    ,KC_C    ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_LEFT ,KC_DOWN ,KC_RGHT ,KC_ENT  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,OS_SFT  ,        REPEAT  ,ALPHA_2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,REPEAT  ,        REPEAT  ,KC_LCTL ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -235,7 +253,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,KC_W    ,KC_G    ,KC_D    ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_H    ,KC_U    ,KC_O    ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_I    ,KC_S    ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_N    ,KC_E    ,KC_A    ,KC_C    ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -351,39 +369,51 @@ void app_switch(uint16_t keycode, const keyrecord_t *record) {
 
 uint8_t mod_state;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static uint16_t fnx_layer_timer;
     // Store the current modifier state in the variable for later reference
     mod_state = get_mods();
     switch (keycode) {
-        case APP_1:
-          app_switch(KC_1, record);
-          break;
-        case APP_2:
-          app_switch(KC_2, record);
-          break;
-        case APP_3:
-          app_switch(KC_3, record);
-          break;
-        case APP_4:
-          app_switch(KC_4, record);
-          break;
-        case APP_5:
-          app_switch(KC_5, record);
-          break;
-        case APP_6:
-          app_switch(KC_6, record);
-          break;
-        case APP_7:
-          app_switch(KC_7, record);
-          break;
-        case APP_8:
-          app_switch(KC_8, record);
-          break;
-        case APP_9:
-          app_switch(KC_9, record);
-          break;
-        case APP_0:
-          app_switch(KC_0, record);
-          break;
+        case S_ENAV:
+            if(record->event.pressed){
+                fnx_layer_timer = timer_read();
+                register_mod(MOD_LSFT);
+            } else {
+                unregister_mod(MOD_LSFT);
+                if (timer_elapsed(fnx_layer_timer) < TAPPING_TERM) {
+                    layer_invert(_NAV);
+                }
+            }
+            return false;
+        // case APP_1:
+        //   app_switch(KC_1, record);
+        //   break;
+        // case APP_2:
+        //   app_switch(KC_2, record);
+        //   break;
+        // case APP_3:
+        //   app_switch(KC_3, record);
+        //   break;
+        // case APP_4:
+        //   app_switch(KC_4, record);
+        //   break;
+        // case APP_5:
+        //   app_switch(KC_5, record);
+        //   break;
+        // case APP_6:
+        //   app_switch(KC_6, record);
+        //   break;
+        // case APP_7:
+        //   app_switch(KC_7, record);
+        //   break;
+        // case APP_8:
+        //   app_switch(KC_8, record);
+        //   break;
+        // case APP_9:
+        //   app_switch(KC_9, record);
+        //   break;
+        // case APP_0:
+        //   app_switch(KC_0, record);
+        //   break;
         default:
           process_repeat_key(keycode, record);
     }
