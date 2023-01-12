@@ -32,6 +32,8 @@ enum custom_keycodes {
 //  RNAV
   REPEAT = SAFE_RANGE,
   S_ENAV,
+  OK_SAL2,
+  OK_ALP2,
   APP_1,
   APP_2,
   APP_3,
@@ -135,11 +137,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_TAB  ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_ENT  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,KC_ESC  ,GUI_L   ,ALT_G   ,CTL_D   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,CTL_H   ,ALT_U   ,GUI_O   ,KC_BSPC ,XXXXXXX ,
+     XXXXXXX ,SFT_Z   ,GUI_L   ,ALT_G   ,CTL_D   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,CTL_H   ,ALT_U   ,GUI_O   ,KC_BSPC ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,NUM_I   ,SYM2_S  ,SYM1_R  ,NAV_T   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,NAV_N   ,SYM1_E  ,SYM2_A  ,NUM_C   ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,REPEAT  ,        A_SFT_2 ,ALPHA_2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,REPEAT  ,        OK_SAL2 ,OK_ALP2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -194,7 +196,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,SFT_V   ,SFT_W   ,SFT_M   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,SFT_F   ,KC_QUOT ,SFT_Z   ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,SFT_Q   ,SFT_J   ,SFT_P   ,SFT_K   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,SFT_B   ,KC_COMM ,SFT_X   ,SFT_Y   ,XXXXXXX ,
+     XXXXXXX ,SFT_Q   ,SFT_J   ,SFT_P   ,KC_K   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,SFT_B   ,KC_COMM ,SFT_X   ,SFT_Y   ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_UNDS ,XXXXXXX ,        REPEAT  ,XXXXXXX ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
@@ -248,7 +250,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,KC_ESC  ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_N    ,KC_UP   ,KC_BSPC ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,KC_ESC  ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_DEL  ,KC_UP   ,KC_BSPC ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_TAB  ,KC_DEL  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_LEFT ,KC_DOWN ,KC_RGHT ,KC_ENT  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
@@ -352,6 +354,9 @@ bool caps_word_press_user(uint16_t keycode) {
         case KC_BSPC:
         case KC_DEL:
         case KC_UNDS:
+        case REPEAT:
+        case OK_SAL2:
+        case OK_ALP2:
         case LSFT(KC_A) ... LSFT(KC_Z):
             return true;
 
@@ -383,7 +388,11 @@ void process_repeat_key(uint16_t keycode, const keyrecord_t *record) {
         return;
     }
     if (record->event.pressed) {
-      last_modifier = get_mods() | get_oneshot_mods();
+      if(is_caps_word_on()){
+        last_modifier = get_mods() | get_oneshot_mods() | MOD_BIT(KC_LSFT);
+      } else {
+        last_modifier = get_mods() | get_oneshot_mods();
+      }
       switch (keycode) {
         case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
         case QK_MOD_TAP ... QK_MOD_TAP_MAX:
@@ -420,11 +429,47 @@ void app_switch(uint16_t keycode, const keyrecord_t *record) {
 }
 
 uint8_t mod_state;
+bool alpha_2_active = false;
+bool sft_alpha_2_active = false;
+bool deactivate_alpha_2 = false;
+bool deactivate_sft_alpha_2 = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint16_t fnx_layer_timer;
     // Store the current modifier state in the variable for later reference
     mod_state = get_mods();
+    if (record->event.pressed){
+        if (sft_alpha_2_active)
+        {
+        sft_alpha_2_active = false;
+        // layer_off(_ALPHA_2);
+        deactivate_sft_alpha_2 = true;
+        }
+        if (alpha_2_active)
+        {
+        alpha_2_active = false;
+        // layer_off(_ALPHA_2);
+        deactivate_alpha_2 = true;
+        }
+    }
+
     switch (keycode) {
+        case OK_SAL2:
+            if(record->event.pressed)
+            {
+                layer_on(_SFT_ALPHA_2);
+                sft_alpha_2_active = true;
+                // return false;
+            }
+            break;
+        case OK_ALP2:
+            if(record->event.pressed)
+            {
+                layer_on(_ALPHA_2);
+                alpha_2_active = true;
+                // return false;
+            }
+            break;
         case S_ENAV:
             if(record->event.pressed){
                 fnx_layer_timer = timer_read();
@@ -472,3 +517,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 
 };
+void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed){
+        if (deactivate_sft_alpha_2){
+        layer_off(_SFT_ALPHA_2);
+        deactivate_sft_alpha_2 = false;
+        }
+        if (deactivate_alpha_2){
+        layer_off(_ALPHA_2);
+        deactivate_alpha_2 = false;
+        }
+    }
+}
