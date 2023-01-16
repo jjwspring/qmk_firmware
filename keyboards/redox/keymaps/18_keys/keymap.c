@@ -46,7 +46,7 @@ enum custom_keycodes {
   APP_0
 };
 // Shortcut to make keymap more readable
-#define ALPHA_2 OSL(_ALPHA_2)
+// #define ALPHA_2 OSL(_ALPHA_2)
 #define A_SFT_2 OSL(_SFT_ALPHA_2)
 #define OS_SFT  OSM(MOD_LSFT)
 
@@ -104,7 +104,12 @@ enum custom_keycodes {
 #define SFT_B   LSFT(KC_B)
 #define SFT_X   LSFT(KC_X)
 #define SFT_Y   LSFT(KC_Y)
-
+// Tap-hold keys
+#define TH_RGHT LT(0, KC_RGHT)
+#define TH_LEFT LT(0, KC_LEFT)
+#define TH_DOWN LT(0, KC_DOWN)
+#define TH_UP   LT(0, KC_UP)
+#define TH_COPY LT(0, KC_C)
 
 //#define APP_1 LGUI(KC_1)
 //#define APP_2 LGUI(KC_2)
@@ -226,7 +231,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_GRV  ,KC_PIPE ,KC_MINS ,KC_NUBS ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_LBRC ,KC_RBRC ,KC_PPE  ,KC_SLSH ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,OS_SFT  ,        REPEAT  ,ALPHA_2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,OS_SFT  ,        REPEAT  ,XXXXXXX ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -240,7 +245,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_ASTR ,KC_PERC ,KC_EXLM ,KC_DQOT ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_LCBR ,KC_RCBR ,KC_AMPR ,KC_CLN  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,OS_SFT  ,        REPEAT  ,ALPHA_2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,OS_SFT  ,        REPEAT  ,XXXXXXX ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -250,9 +255,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,KC_ESC  ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_DEL  ,KC_UP   ,KC_BSPC ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,KC_ESC  ,TH_COPY ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_DEL  ,TH_UP   ,KC_BSPC ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,KC_TAB  ,KC_DEL  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_LEFT ,KC_DOWN ,KC_RGHT ,KC_ENT  ,XXXXXXX ,
+     XXXXXXX ,KC_TAB  ,KC_DEL  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    S_ENAV  ,KC_LALT ,        TO_ALP1 ,KC_LCTL ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
@@ -268,7 +273,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,OS_SFT  ,        REPEAT  ,ALPHA_2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,OS_SFT  ,        REPEAT  ,XXXXXXX ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   )
 
@@ -344,7 +349,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
     case CAPS_COMBO:
       if (pressed) {
-        caps_word_on();  // Activate Caps Word!
+        caps_word_toggle();  // Activate Caps Word!
       }
       break;
 
@@ -479,6 +484,53 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_on(_ALPHA_2);
                 alpha_2_active = true;
                 // return false;
+            }
+            break;
+        case TH_LEFT: //sends colon on tap and semicolon on hold
+            if (record->tap.count && record->event.pressed) {
+                process_repeat_key(keycode, record);
+            } else if (record->event.pressed) {
+                process_repeat_key(KC_HOME, record);
+                tap_code16(KC_HOME);
+                return false;
+            }
+            break;
+        case TH_RGHT: //sends colon on tap and semicolon on hold
+            if (record->tap.count && record->event.pressed) {
+                process_repeat_key(keycode, record);
+            } else if (record->event.pressed) {
+                process_repeat_key(KC_END, record);
+                tap_code16(KC_END);
+                return false;
+            }
+            break;
+        case TH_DOWN: //sends colon on tap and semicolon on hold
+            if (record->tap.count && record->event.pressed) {
+                process_repeat_key(keycode, record);
+            } else if (record->event.pressed) {
+                process_repeat_key(KC_PGDN, record);
+                tap_code16(KC_PGDN);
+                return false;
+            }
+            break;
+        case TH_UP: //sends colon on tap and semicolon on hold
+            if (record->tap.count && record->event.pressed) {
+                process_repeat_key(keycode, record);
+            } else if (record->event.pressed) {
+                process_repeat_key(KC_PGUP, record);
+                tap_code16(KC_PGUP);
+                return false;
+            }
+            break;
+        case TH_COPY: //sends colon on tap and semicolon on hold
+            if (record->tap.count && record->event.pressed) {
+                process_repeat_key(COPY, record);
+                tap_code16(COPY);
+                return false;
+            } else if (record->event.pressed) {
+                process_repeat_key(PASTE, record);
+                tap_code16(PASTE);
+                return false;
             }
             break;
         case S_ENAV:
