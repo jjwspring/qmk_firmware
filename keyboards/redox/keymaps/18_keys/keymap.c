@@ -110,6 +110,7 @@ enum custom_keycodes {
 #define TH_DOWN LT(0, KC_DOWN)
 #define TH_UP   LT(0, KC_UP)
 #define TH_COPY LT(0, KC_C)
+#define TH_BSPC LT(0, KC_BSPC)
 
 //#define APP_1 LGUI(KC_1)
 //#define APP_2 LGUI(KC_2)
@@ -255,7 +256,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,KC_ESC  ,TH_COPY ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_DEL  ,TH_UP   ,KC_BSPC ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,KC_ESC  ,TH_COPY ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_DEL  ,TH_UP   ,TH_BSPC ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_TAB  ,KC_DEL  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
@@ -519,6 +520,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else if (record->event.pressed) {
                 process_repeat_key(KC_PGUP, record);
                 tap_code16(KC_PGUP);
+                return false;
+            }
+            break;
+        case TH_BSPC: //sends colon on tap and semicolon on hold
+            if (record->tap.count && record->event.pressed) {
+                process_repeat_key(keycode, record);
+            } else if (record->event.pressed) {
+                process_repeat_key(LCTL(KC_BSPC), record);
+                tap_code16(LCTL(KC_BSPC));
+                return false;
+            }
+            break;
+        case TH_COPY: //sends colon on tap and semicolon on hold
+            if (record->tap.count && record->event.pressed) {
+                process_repeat_key(COPY, record);
+                tap_code16(COPY);
+                return false;
+            } else if (record->event.pressed) {
+                process_repeat_key(PASTE, record);
+                tap_code16(PASTE);
                 return false;
             }
             break;
