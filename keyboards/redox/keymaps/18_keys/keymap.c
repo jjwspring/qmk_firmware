@@ -139,7 +139,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ALPHA_1] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_B    ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_TAB  ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_ENT  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -210,7 +210,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUM] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,QK_BOOT ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -270,9 +270,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,KC_I    ,KC_S    ,KC_R    ,KC_T    ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_N    ,KC_E    ,KC_A    ,KC_C    ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,KC_F11  ,KC_F10  ,KC_F1   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_F4   ,KC_F5   ,KC_F6   ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,QK_BOOT ,KC_F12  ,KC_F2   ,KC_F3   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_F7   ,KC_F8   ,KC_F9   ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,OS_SFT  ,        REPEAT  ,XXXXXXX ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
@@ -335,17 +335,21 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 enum combo_events {
   CAPS_COMBO,
   TOGGLE_NAV,
+  FUNCTION_LAYER,
   COMBO_LENGTH
 };
 uint16_t COMBO_LEN = COMBO_LENGTH;
 
 const uint16_t PROGMEM caps_word[] = {NAV_N   ,SYM1_E  ,SYM2_A, COMBO_END};
 const uint16_t PROGMEM toggle_nav[] = {CTL_H   ,ALT_U   ,GUI_O, COMBO_END};
+const uint16_t PROGMEM function_layer[] = {NAV_N   ,SYM1_E  ,SYM2_A, NUM_C, COMBO_END};
 combo_t key_combos[] = {
     [CAPS_COMBO] = COMBO_ACTION(caps_word),
-    COMBO(toggle_nav, TO(_NAV))
+    COMBO(toggle_nav, TO(_NAV)),
+    [FUNCTION_LAYER] = COMBO_ACTION(function_layer),
 };
 
+uint8_t function_mods;
 void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
     case CAPS_COMBO:
@@ -353,8 +357,13 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         caps_word_toggle();  // Activate Caps Word!
       }
       break;
-
-    // Other combos...
+    case FUNCTION_LAYER:
+      if (pressed) {
+        function_mods = get_mods();
+      } else {
+        set_oneshot_layer(_FUN, ONESHOT_START);
+        clear_oneshot_layer_state(ONESHOT_PRESSED);
+      }
   }
 }
 
@@ -487,7 +496,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // return false;
             }
             break;
-        case TH_LEFT: //sends colon on tap and semicolon on hold
+        case TH_LEFT:
             if (record->tap.count && record->event.pressed) {
                 process_repeat_key(keycode, record);
             } else if (record->event.pressed) {
@@ -496,7 +505,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
             }
             break;
-        case TH_RGHT: //sends colon on tap and semicolon on hold
+        case TH_RGHT:
             if (record->tap.count && record->event.pressed) {
                 process_repeat_key(keycode, record);
             } else if (record->event.pressed) {
@@ -505,7 +514,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
             }
             break;
-        case TH_DOWN: //sends colon on tap and semicolon on hold
+        case TH_DOWN:
             if (record->tap.count && record->event.pressed) {
                 process_repeat_key(keycode, record);
             } else if (record->event.pressed) {
@@ -514,7 +523,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
             }
             break;
-        case TH_UP: //sends colon on tap and semicolon on hold
+        case TH_UP:
             if (record->tap.count && record->event.pressed) {
                 process_repeat_key(keycode, record);
             } else if (record->event.pressed) {
@@ -523,7 +532,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
             }
             break;
-        case TH_BSPC: //sends colon on tap and semicolon on hold
+        case TH_BSPC:
             if (record->tap.count && record->event.pressed) {
                 process_repeat_key(keycode, record);
             } else if (record->event.pressed) {
@@ -532,18 +541,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
             }
             break;
-        case TH_COPY: //sends colon on tap and semicolon on hold
-            if (record->tap.count && record->event.pressed) {
-                process_repeat_key(COPY, record);
-                tap_code16(COPY);
-                return false;
-            } else if (record->event.pressed) {
-                process_repeat_key(PASTE, record);
-                tap_code16(PASTE);
-                return false;
-            }
-            break;
-        case TH_COPY: //sends colon on tap and semicolon on hold
+        case TH_COPY:
             if (record->tap.count && record->event.pressed) {
                 process_repeat_key(COPY, record);
                 tap_code16(COPY);
@@ -565,6 +563,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             return false;
+        case KC_F1 ... KC_F12:
+            if(record->event.pressed){
+                register_mods(function_mods);
+                register_code16(keycode);
+                unregister_mods(function_mods);
+                register_mods(mod_state);
+                last_modifier = function_mods;
+                last_keycode = keycode;
+                return false;
+            }
+            break;
         // case APP_1:
         //   app_switch(KC_1, record);
         //   break;
