@@ -1,0 +1,9 @@
+{
+    "keyboard_name": "Flutter",
+    "manufacturer": "JJW",
+    "usb": {
+        "vid": "0xFEED",
+        "pid": "0x0000",
+        "device_version": "0.0.1"
+    }
+}
