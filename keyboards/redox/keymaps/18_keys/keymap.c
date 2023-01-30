@@ -9,10 +9,10 @@
 #define _SAFE 2
 #define _LHAND 3
 #define _SFT_ALPHA_2 4
-#define _NAV 5
-#define _NUM 6
-#define _SYM_1 7
-#define _SYM_2 8
+#define _NUM 5
+#define _SYM_1 6
+#define _SYM_2 7
+#define _NAV 8
 #define _FUN 9
 #define _RHAND 10
 #define _RNAV 11
