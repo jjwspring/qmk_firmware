@@ -5,10 +5,10 @@
 #define _SAFE 2
 #define _LHAND 3
 #define _SFT_ALPHA_2 4
-#define _NAV 5
-#define _NUM 6
-#define _SYM_1 7
-#define _SYM_2 8
+#define _NUM 5
+#define _SYM_1 6
+#define _SYM_2 7
+#define _NAV 8
 #define _FUN 9
 #define _RHAND 10
 #define _RNAV 11
@@ -46,11 +46,13 @@ enum custom_keycodes {
 #define ALT_QOT LALT_T(KC_QUOT)
 #define GUI_V   LGUI_T(KC_V)
 #define GUI_Z   RGUI_T(KC_Z)
+#define SPC_SFT LSFT_T(KC_SPC)
 #define NUM_I   LT(_NUM, KC_I)
 #define SYM2_S  LT(_SYM_2, KC_S)
 #define SYM1_R  LT(_SYM_1, KC_R)
 #define NAV_T   LT(_NAV, KC_T)
 #define NAV_K   LT(_NAV, KC_K)
+#define NAV_3   LT(_NAV, KC_3)
 #define NAV_N   LT(_NAV, KC_N)
 #define SYM1_E  LT(_SYM_1, KC_E)
 #define SYM2_A  LT(_SYM_2, KC_A)
@@ -71,6 +73,7 @@ enum custom_keycodes {
 #define REDO    LCTL(KC_Y)
 #define CTL_LFT LCTL(KC_LEFT)
 #define CTL_RGT LCTL(KC_RGHT)
+#define SRN_SHT LGUI(LSFT(KC_S))
 #define SFT_V   LSFT(KC_V)
 #define SFT_W   LSFT(KC_W)
 #define SFT_M   LSFT(KC_M)
@@ -147,11 +150,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUM] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
-              KC_DOT  ,KC_0    ,KC_1    ,                          KC_4    ,KC_5    ,KC_6    ,
+              KC_DOT  ,KC_0    ,KC_1    ,                          KC_7    ,KC_8    ,KC_9    ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     KC_MINS ,KC_PPLS ,KC_2    ,KC_3    ,                          KC_7    ,KC_8    ,KC_9    ,KC_EQL  ,
+     KC_MINS ,KC_PPLS ,KC_2    ,NAV_3   ,                          KC_4    ,KC_5    ,KC_6    ,KC_EQL  ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
-                                KC_SPC  ,OS_SFT  ,        TO_ALP1 ,KC_LCTL 
+                                SPC_SFT ,OS_SFT  ,        TO_ALP1 ,KC_LCTL 
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
@@ -161,17 +164,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
      KC_GRV  ,KC_PIPE ,KC_MINS ,KC_NUBS ,                          KC_LBRC ,KC_RBRC ,KC_PPE  ,KC_SLSH ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
-                                KC_SPC  ,OS_SFT  ,        REPEAT  ,XXXXXXX 
+                                SPC_SFT ,OS_SFT  ,        REPEAT  ,XXXXXXX 
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
   [_SYM_2] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
-              KC_ATS  ,KC_EXLM ,XXXXXXX ,                          KC_LPRN ,KC_RPRN ,KC_SCLN ,
+              KC_ATS  ,KC_EXLM ,KC_P3   ,                          KC_LPRN ,KC_RPRN ,KC_SCLN ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
      KC_ASTR ,KC_PERC ,KC_QST  ,KC_DQOT ,                          KC_LCBR ,KC_RCBR ,KC_AMPR ,KC_CLN  ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
-                                KC_SPC  ,OS_SFT  ,        REPEAT  ,XXXXXXX 
+                                SPC_SFT ,OS_SFT  ,        REPEAT  ,XXXXXXX 
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
@@ -179,7 +182,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
               KC_ESC  ,TH_COPY ,KC_APP  ,                          KC_DEL  ,TH_UP   ,TH_BSPC ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     KC_TAB  ,KC_DEL  ,C(KC_Z) ,XXXXXXX ,                          TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,
+     KC_TAB  ,KC_DEL  ,C(KC_Z) ,SRN_SHT ,                          TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
                                 S_ENAV  ,KC_LALT ,        TO_ALP1 ,KC_LCTL 
   //                           └────────┴────────┘       └────────┴────────┘
@@ -209,6 +212,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 enum combo_events {
   CAPS_COMBO,
+  NUMBER_WORD,
   TOGGLE_NAV,
   FUNCTION_LAYER,
   COMBO_LENGTH
@@ -216,11 +220,13 @@ enum combo_events {
 uint16_t COMBO_LEN = COMBO_LENGTH;
 
 const uint16_t PROGMEM caps_word[] = {NAV_N   ,SYM1_E  ,SYM2_A, COMBO_END};
+const uint16_t PROGMEM num_word[] = {NAV_T   ,SYM1_R  ,SYM2_S, COMBO_END};
 const uint16_t PROGMEM toggle_nav[] = {CTL_H   ,ALT_U   ,GUI_O, COMBO_END};
 const uint16_t PROGMEM function_layer[] = {NAV_N   ,SYM1_E  ,SYM2_A, NUM_C, COMBO_END};
 combo_t key_combos[] = {
     [CAPS_COMBO] = COMBO_ACTION(caps_word),
     COMBO(toggle_nav, TO(_NAV)),
+    COMBO(num_word, TO(_NUM)),
     [FUNCTION_LAYER] = COMBO_ACTION(function_layer),
 };
 
