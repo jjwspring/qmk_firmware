@@ -278,7 +278,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,QK_BOOT ,KC_F12  ,KC_F2   ,KC_F3   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_F4   ,KC_F5   ,KC_F6   ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    DM_PLY1 ,DM_REC1 ,        DM_PLY2 ,DM_REC2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    DM_PLY1 ,DM_REC1 ,        DM_REC2 ,DM_PLY2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   )
 
@@ -404,7 +404,7 @@ uint16_t last_keycode = KC_NO;
 uint8_t last_modifier = 0;
 uint16_t pressed_keycode = KC_NO;
 
-void process_repeat_key(uint16_t keycode, const keyrecord_t *record) {
+void process_repeat_key(uint16_t keycode, keyrecord_t *record) {
   if (keycode != REPEAT) {
     // Early return when holding down a pure layer key
     // to retain modifiers
@@ -437,15 +437,36 @@ void process_repeat_key(uint16_t keycode, const keyrecord_t *record) {
         }
     }
   } else { // keycode == REPEAT
-    if (record->event.pressed) {
-      pressed_keycode = last_keycode;
-      register_mods(last_modifier);
-      register_code16(pressed_keycode);
-      unregister_mods(last_modifier);
-    } else {
-      unregister_code16(pressed_keycode);
+    switch (last_keycode)
+    {
+    case DM_PLY1:
+    case DM_PLY2:
+    /* Running the dynamic macro has to be processed*/
+        process_dynamic_macro(last_keycode, record);
+        break;
+    default:
+        if (record->event.pressed) {
+            pressed_keycode = last_keycode;
+            register_mods(last_modifier);
+            register_code16(pressed_keycode);
+            unregister_mods(last_modifier);
+        } else {
+            unregister_code16(pressed_keycode);
+        }
     }
   }
+}
+
+void dynamic_macro_play_user(int8_t direction) {
+    /* Sets the last_keycode to DM_PLYX after the dynamic macro has finished playing*/
+    switch (direction)
+    {
+    case +1:
+        last_keycode = DM_PLY1;
+        break;
+    case -1:
+        last_keycode = DM_PLY2;
+    }
 }
 
 
@@ -581,6 +602,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
             }
             break;
+        case DM_PLY1:
+        case DM_PLY2:
+        case DM_REC1:
+        case DM_REC2:
+        /* Releases DM keys on the one shot layer so they are only sent to process_dynamic_macro() once */
+            unregister_code16(keycode);
+            return false;
         // case APP_1:
         //   app_switch(KC_1, record);
         //   break;
