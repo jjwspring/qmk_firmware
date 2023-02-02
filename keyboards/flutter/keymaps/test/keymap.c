@@ -18,6 +18,7 @@
 
 enum custom_keycodes {
   REPEAT = SAFE_RANGE,
+  REV_REP,
   S_ENAV,
   OK_SAL2,
   OK_ALP2,
@@ -125,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
      KC_Q    ,KC_J    ,KC_P    ,NAV_K   ,                          KC_B    ,KC_DOT  ,KC_X    ,KC_Y    ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
-                                OS_SFT  ,DM_RSTP ,        XXXXXXX ,XXXXXXX
+                                OS_SFT  ,REV_REP ,        XXXXXXX ,XXXXXXX
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
@@ -252,6 +253,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 bool caps_word_press_user(uint16_t keycode) {
     switch (keycode) {
         case KC_A ... KC_Z:
+            register_key_to_repeat(LSFT(keycode));  // Runs after process_record_user so original repeat does not include the LSFT
             add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
             return true;
 
@@ -277,12 +279,18 @@ uint16_t pressed_keycode = KC_NO;
 
 
 void process_repeat_key(uint16_t keycode, keyrecord_t *record) {
-    if (keycode != REPEAT){
+    switch (keycode)
+    {
+    case REPEAT:
+        update_repeat_key(record);
+        break;
+    case REV_REP:
+        update_reverse_repeat_key(record);
+        break;
+    default:
         if (record->event.pressed){
             register_key_to_repeat(keycode);
         }
-    } else {
-        update_repeat_key(record);
     }
 }
 // void process_repeat_key(uint16_t keycode, keyrecord_t *record) {
