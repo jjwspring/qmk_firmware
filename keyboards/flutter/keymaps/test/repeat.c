@@ -8,6 +8,10 @@ uint16_t last_key(void) {
     return last_keycode;
 }
 
+uint16_t no_mods(uint16_t keycode) {
+    return keycode & 0xFF;
+}
+
 void register_key_to_repeat(uint16_t keycode) {
     // Get the base keycode of a mod or layer tap key
     switch (keycode) {
@@ -44,6 +48,17 @@ void update_repeat_key(keyrecord_t *record) {
     }
 }
 
+void update_reverse_key_pairs_any_mods(uint16_t a, uint16_t b, keyrecord_t *record) {
+    uint16_t last_keycode_no_mods = no_mods(last_keycode);
+    if (last_keycode_no_mods == no_mods(a)) {
+        last_keycode = (last_keycode & 0xFF00) | no_mods(b);
+        update_key(last_keycode, record);
+    } else if (last_keycode_no_mods == no_mods(b)) {
+        last_keycode = (last_keycode & 0xFF00) | no_mods(a);
+        update_key(last_keycode, record);
+    }
+}
+
 void update_reverse_key_pairs(uint16_t a, uint16_t b, keyrecord_t *record) {
     if (last_keycode == a) {
         last_keycode = b;
@@ -56,20 +71,17 @@ void update_reverse_key_pairs(uint16_t a, uint16_t b, keyrecord_t *record) {
 
 void update_reverse_repeat_key(keyrecord_t *record) {
     if (record->event.pressed){
-        /* Set last_keycode to its "reverse" and press it */
+        // Set last_keycode to its "reverse" and press it */
         update_reverse_key_pairs(C(KC_TAB), C(S(KC_TAB)), record);
         update_reverse_key_pairs(C(KC_N), C(KC_P), record);
         update_reverse_key_pairs(C(KC_F), C(KC_B), record);
         update_reverse_key_pairs(C(KC_U), C(KC_D), record);
-        // update_reverse_key_pairs(C(SE_G), C(S(SE_G)), record);
-        update_reverse_key_pairs(KC_PGUP, KC_PGDN, record);
-        // update_reverse_key_pairs(SE_ASTR, SE_HASH, record);
-        // update_reverse_key_pairs(SE_LCBR, SE_RCBR, record);
-        // update_reverse_key_pairs(G(SE_K), G(SE_J), record);
-        // update_reverse_key_pairs(C(SE_O), C(SE_I), record);
-
         update_reverse_key_pairs(S(KC_W), S(KC_B), record);
-        // update_reverse_key_pairs(SE_U, C(SE_R), record);
+
+        update_reverse_key_pairs_any_mods(KC_PGUP, KC_PGDN, record);
+        update_reverse_key_pairs_any_mods(KC_UP, KC_DOWN, record);
+        update_reverse_key_pairs_any_mods(KC_LEFT, KC_RGHT, record);
+
     } else {
         /* By this point the last keycode has been flipped so a normal update will release it */
         update_repeat_key(record);
