@@ -8,13 +8,25 @@ uint16_t last_key(void) {
     return last_keycode;
 }
 
-uint16_t no_mods(uint16_t keycode) {
+uint16_t without_mods(uint16_t keycode) {
     return keycode & 0xFF;
 }
 
 void register_key_to_repeat(uint16_t keycode) {
     // Get the base keycode of a mod or layer tap key
     switch (keycode) {
+        case QK_MODS ... QK_MODS_MAX:
+            if (without_mods(keycode)) break; // if keycode is modified in keymap treat as a normal keycode
+        case KC_NO:
+        case KC_LSFT:
+        case QK_DEF_LAYER ... QK_DEF_LAYER_MAX:
+        case QK_MOMENTARY ... QK_MOMENTARY_MAX:
+        case QK_LAYER_MOD ... QK_LAYER_MOD_MAX:
+        case QK_ONE_SHOT_LAYER ... QK_ONE_SHOT_LAYER_MAX:
+        case QK_TOGGLE_LAYER ... QK_TOGGLE_LAYER_MAX:
+        case QK_TO ... QK_TO_MAX:
+        case QK_LAYER_TAP_TOGGLE ... QK_LAYER_TAP_TOGGLE_MAX:
+            return;
         case QK_MOD_TAP ... QK_MOD_TAP_MAX:
         case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
             keycode = keycode & 0xFF;
@@ -43,18 +55,23 @@ void update_key(uint16_t keycode, keyrecord_t *record) {
 
 void update_repeat_key(keyrecord_t *record) {
     switch (last_keycode) {
-        default:
-            update_key(last_keycode, record);
+    case DM_PLY1:
+    case DM_PLY2:
+    /* Running the dynamic macro has to be processed not just registered */
+        process_dynamic_macro(last_keycode, record);
+        break;
+    default:
+        update_key(last_keycode, record);
     }
 }
 
 void update_reverse_key_pairs_any_mods(uint16_t a, uint16_t b, keyrecord_t *record) {
-    uint16_t last_keycode_no_mods = no_mods(last_keycode);
-    if (last_keycode_no_mods == no_mods(a)) {
-        last_keycode = (last_keycode & 0xFF00) | no_mods(b);
+    uint16_t last_keycode_no_mods = without_mods(last_keycode);
+    if (last_keycode_no_mods == without_mods(a)) {
+        last_keycode = (last_keycode & 0xFF00) | without_mods(b);
         update_key(last_keycode, record);
-    } else if (last_keycode_no_mods == no_mods(b)) {
-        last_keycode = (last_keycode & 0xFF00) | no_mods(a);
+    } else if (last_keycode_no_mods == without_mods(b)) {
+        last_keycode = (last_keycode & 0xFF00) | without_mods(a);
         update_key(last_keycode, record);
     }
 }
@@ -71,12 +88,23 @@ void update_reverse_key_pairs(uint16_t a, uint16_t b, keyrecord_t *record) {
 
 void update_reverse_repeat_key(keyrecord_t *record) {
     if (record->event.pressed){
-        // Set last_keycode to its "reverse" and press it */
+        /* Set last_keycode to its "reverse" and press it */
+
+        /* For tab switching and inserting */
         update_reverse_key_pairs(C(KC_TAB), C(S(KC_TAB)), record);
-        update_reverse_key_pairs(C(KC_N), C(KC_P), record);
+        update_reverse_key_pairs(KC_TAB, S(KC_TAB), record);
+        /* Undo and redo */
+        update_reverse_key_pairs(C(KC_Z), C(KC_Y), record);
+        update_reverse_key_pairs(KC_H, C(KC_R), record);
+        /* Page jumping in vim*/
         update_reverse_key_pairs(C(KC_F), C(KC_B), record);
         update_reverse_key_pairs(C(KC_U), C(KC_D), record);
+        /* Next word and back in vim */
+        update_reverse_key_pairs(KC_W, KC_B, record);
         update_reverse_key_pairs(S(KC_W), S(KC_B), record);
+        /* Arrow keys in vim */
+        update_reverse_key_pairs(KC_A, KC_N, record);
+        update_reverse_key_pairs(KC_U, KC_E, record);
 
         update_reverse_key_pairs_any_mods(KC_PGUP, KC_PGDN, record);
         update_reverse_key_pairs_any_mods(KC_UP, KC_DOWN, record);

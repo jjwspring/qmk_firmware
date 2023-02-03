@@ -253,7 +253,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 bool caps_word_press_user(uint16_t keycode) {
     switch (keycode) {
         case KC_A ... KC_Z:
-            register_key_to_repeat(LSFT(keycode));  // Runs after process_record_user so original repeat does not include the LSFT
+            register_key_to_repeat(LSFT(keycode));  // Updates repeat key to include LSFT
             add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
             return true;
 
@@ -349,10 +349,11 @@ void dynamic_macro_play_user(int8_t direction) {
     switch (direction)
     {
     case +1:
-        last_keycode_j = DM_PLY1;
-        break;
+        register_key_to_repeat(DM_PLY1);
+        return;
     case -1:
-        last_keycode_j = DM_PLY2;
+        register_key_to_repeat(DM_PLY2);
+        return;
     }
 }
 
@@ -368,106 +369,78 @@ void app_switch(uint16_t keycode, const keyrecord_t *record) {
     }
 }
 
+bool register_tap_hold(uint16_t tap_keycode, uint16_t hold_keycode, keyrecord_t *record) {
+    if (record->tap.count && record->event.pressed) {
+        register_key_to_repeat(tap_keycode);
+        tap_code16(tap_keycode);
+        return false;
+    } else if (record->event.pressed) {
+        register_key_to_repeat(hold_keycode);
+        tap_code16(hold_keycode);
+        return false;
+    } else {
+        return true;
+    }
+}
+
 uint8_t mod_state;
 bool alpha_2_active = false;
 bool sft_alpha_2_active = false;
 bool deactivate_alpha_2 = false;
 bool deactivate_sft_alpha_2 = false;
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    static uint16_t fnx_layer_timer;
-    mod_state = get_mods();
+void update_one_key_layer_flags(keyrecord_t *record) {
     if (record->event.pressed){
-        if (sft_alpha_2_active)
-        {
-        sft_alpha_2_active = false;
-        deactivate_sft_alpha_2 = true;
+        if (sft_alpha_2_active) {
+            sft_alpha_2_active = false;
+            deactivate_sft_alpha_2 = true;
         }
-        if (alpha_2_active)
-        {
-        alpha_2_active = false;
-        deactivate_alpha_2 = true;
+        if (alpha_2_active) {
+            alpha_2_active = false;
+            deactivate_alpha_2 = true;
         }
     }
+}
+
+bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static uint16_t enav_timer;
 
     switch (keycode) {
         case OK_SAL2:
-            if(record->event.pressed)
-            {
+            if(record->event.pressed) {
                 layer_on(_SFT_ALPHA_2);
                 sft_alpha_2_active = true;
+                return false;
+            } else {
+                return true;
             }
-            break;
         case OK_ALP2:
-            if(record->event.pressed)
-            {
+            if(record->event.pressed) {
                 layer_on(_ALPHA_2);
                 alpha_2_active = true;
+                return false;
+            } else {
+                return true;
             }
-            break;
         case TH_LEFT:
-            if (record->tap.count && record->event.pressed) {
-                process_repeat_key(keycode, record);
-            } else if (record->event.pressed) {
-                process_repeat_key(KC_HOME, record);
-                tap_code16(KC_HOME);
-                return false;
-            }
-            break;
+            return register_tap_hold(keycode, KC_HOME, record);
         case TH_RGHT:
-            if (record->tap.count && record->event.pressed) {
-                process_repeat_key(keycode, record);
-            } else if (record->event.pressed) {
-                process_repeat_key(KC_END, record);
-                tap_code16(KC_END);
-                return false;
-            }
-            break;
+            return register_tap_hold(keycode, KC_END, record);
         case TH_DOWN:
-            if (record->tap.count && record->event.pressed) {
-                process_repeat_key(keycode, record);
-            } else if (record->event.pressed) {
-                process_repeat_key(KC_PGDN, record);
-                tap_code16(KC_PGDN);
-                return false;
-            }
-            break;
+            return register_tap_hold(keycode, KC_PGDN, record);
         case TH_UP:
-            if (record->tap.count && record->event.pressed) {
-                process_repeat_key(keycode, record);
-            } else if (record->event.pressed) {
-                process_repeat_key(KC_PGUP, record);
-                tap_code16(KC_PGUP);
-                return false;
-            }
-            break;
+            return register_tap_hold(keycode, KC_PGUP, record);
         case TH_BSPC:
-            if (record->tap.count && record->event.pressed) {
-                process_repeat_key(keycode, record);
-            } else if (record->event.pressed) {
-                process_repeat_key(LCTL(KC_BSPC), record);
-                tap_code16(LCTL(KC_BSPC));
-                return false;
-            }
-            break;
+            return register_tap_hold(keycode, LCTL(KC_BSPC), record);
         case TH_COPY:
-            if (record->tap.count && record->event.pressed) {
-                process_repeat_key(COPY, record);
-                tap_code16(COPY);
-                return false;
-            } else if (record->event.pressed) {
-                process_repeat_key(PASTE, record);
-                tap_code16(PASTE);
-                return false;
-            }
-            break;
+            return register_tap_hold(COPY, PASTE, record);
         case S_ENAV:
             if(record->event.pressed){
-                fnx_layer_timer = timer_read();
+                enav_timer = timer_read();
                 register_mods(MOD_LSFT);
             } else {
                 unregister_mods(MOD_LSFT);
-                if (timer_elapsed(fnx_layer_timer) < TAPPING_TERM) {
+                if (timer_elapsed(enav_timer) < TAPPING_TERM) {
                     layer_invert(_NAV);
                 }
             }
@@ -476,26 +449,49 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if(record->event.pressed){
                 register_mods(function_mods);
                 register_code16(keycode);
+                register_key_to_repeat(keycode);
                 unregister_mods(function_mods);
                 register_mods(mod_state);
-                last_modifier = function_mods;
-                last_keycode_j = keycode;
                 return false;
+            } else {
+                return true;
             }
-            break;
         case DM_PLY1:
         case DM_PLY2:
         case DM_REC1:
         case DM_REC2:
         /* Releases DM keys on the one shot layer so they are only sent to process_dynamic_macro() once */
             unregister_code16(keycode);
+            /* Registering repeat for play is done in */
+            return false;
+        case REPEAT:
+            update_repeat_key(record);
+            post_process_record_user(keycode, record);
+            return false;
+        case REV_REP:
+            update_reverse_repeat_key(record);
+            post_process_record_user(keycode, record);
             return false;
         default:
-          process_repeat_key(keycode, record);
+            return true;
     }
-    return true;
+}
 
-};
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    mod_state = get_mods();
+    update_one_key_layer_flags(record);
+
+    bool res = _process_record_user(keycode, record);
+
+    if (res && record->event.pressed) {
+        register_key_to_repeat(keycode);
+    }
+
+    return res;
+
+}
+
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed){
         if (deactivate_sft_alpha_2){
