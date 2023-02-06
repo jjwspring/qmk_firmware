@@ -39,4 +39,8 @@ print(output)
 with open(r"keyboards\flutter\keymaps\from_redox\keymap.c", 'w', encoding="utf8") as out_file:
     out_file.write(output)
 
+for file_name in ("repeat.c", "repeat.h", "rules.mk"):
+    with open(rf"keyboards\redox\keymaps\18_keys\{file_name}", encoding="utf8") as in_file:
+        with open(rf"keyboards\flutter\keymaps\from_redox\{file_name}", 'w', encoding="utf8") as out_file:
+            out_file.write(in_file.read())
 
