@@ -2,8 +2,8 @@
 #include "repeat.h"
 
 #define _ALPHA_1 0
-#define _ALPHA_2 1
-#define _SAFE 2
+#define _NUMWORD 1
+#define _ALPHA_2 2
 #define _LHAND 3
 #define _SFT_ALPHA_2 4
 #define _NUM 5
@@ -19,7 +19,7 @@
 enum custom_keycodes {
   REPEAT = SAFE_RANGE,
   REV_REP,
-  S_ENAV,
+  S_E_NAV,
   OK_SAL2,
   OK_ALP2,
   APP_1,
@@ -49,17 +49,32 @@ enum custom_keycodes {
 #define GUI_V   LGUI_T(KC_V)
 #define GUI_Z   RGUI_T(KC_Z)
 #define SPC_SFT LSFT_T(KC_SPC)
+#define GUI_DOT LGUI_T(KC_DOT)
+#define ALT_0   LALT_T(KC_0)
+#define CTL_1   LCTL_T(KC_1)
+#define CTL_7   RCTL_T(KC_7)
+#define ALT_8   LALT_T(KC_8)
+#define GUI_9   RGUI_T(KC_9)
+
 #define NUM_I   LT(_NUM, KC_I)
 #define SYM2_S  LT(_SYM_2, KC_S)
 #define SYM1_R  LT(_SYM_1, KC_R)
 #define NAV_T   LT(_NAV, KC_T)
 #define NAV_K   LT(_NAV, KC_K)
-#define NAV_3   LT(_NAV, KC_3)
 #define NAV_N   LT(_NAV, KC_N)
 #define SYM1_E  LT(_SYM_1, KC_E)
 #define SYM2_A  LT(_SYM_2, KC_A)
 #define NUM_C   LT(_NUM, KC_C)
+
+#define SYM_PLS LT(_SYM_2, KC_PPLS)
+#define SYM_2   LT(_SYM_1, KC_2)
+#define NAV_3   LT(_NAV, KC_3)
+#define NAV_4   LT(_NAV, KC_4)
+#define SYM_5   LT(_SYM_1, KC_5)
+#define SYM_6   LT(_SYM_2, KC_6)
+
 #define TO_ALP1 TO(_ALPHA_1)
+
 #define KC_DQOT LSFT(KC_2)
 #define KC_PND  LSFT(KC_3)
 #define KC_LTHN LSFT(KC_COMM)
@@ -68,6 +83,7 @@ enum custom_keycodes {
 #define KC_QST  LSFT(KC_SLSH)
 #define KC_PPE  LSFT(KC_NUBS)
 #define KC_ATS  LSFT(KC_QUOT)
+
 #define PASTE   LCTL(KC_V)
 #define COPY    LCTL(KC_C)
 #define CUT     LCTL(KC_X)
@@ -76,6 +92,7 @@ enum custom_keycodes {
 #define CTL_LFT LCTL(KC_LEFT)
 #define CTL_RGT LCTL(KC_RGHT)
 #define SRN_SHT LGUI(LSFT(KC_S))
+
 #define SFT_V   LSFT(KC_V)
 #define SFT_W   LSFT(KC_W)
 #define SFT_M   LSFT(KC_M)
@@ -88,6 +105,7 @@ enum custom_keycodes {
 #define SFT_B   LSFT(KC_B)
 #define SFT_X   LSFT(KC_X)
 #define SFT_Y   LSFT(KC_Y)
+
 #define TH_RGHT LT(0, KC_RGHT)
 #define TH_LEFT LT(0, KC_LEFT)
 #define TH_DOWN LT(0, KC_DOWN)
@@ -120,6 +138,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
+  [_NUMWORD] = LAYOUT(
+  //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
+              GUI_DOT ,ALT_0   ,CTL_1   ,                          CTL_7   ,ALT_8   ,GUI_9   ,
+  //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
+     KC_MINS ,SYM_PLS ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,
+  //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
+                                SPC_SFT ,OS_SFT  ,        TO_ALP1 ,OK_ALP2 
+  //                           └────────┴────────┘       └────────┴────────┘
+  ),
+
   [_ALPHA_2] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
               GUI_V   ,ALT_W   ,CTL_M   ,                          CTL_F   ,ALT_QOT ,GUI_Z   ,
@@ -127,16 +155,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_Q    ,KC_J    ,KC_P    ,NAV_K   ,                          KC_B    ,KC_DOT  ,KC_X    ,KC_Y    ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
                                 OS_SFT  ,REV_REP ,        XXXXXXX ,XXXXXXX 
-  //                           └────────┴────────┘       └────────┴────────┘
-  ),
-
-  [_SAFE] = LAYOUT(
-  //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
-              _______ ,_______ ,_______ ,                          _______ ,_______ ,_______ ,
-  //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     _______ ,_______ ,_______ ,_______ ,                          _______ ,_______ ,_______ ,_______ ,
-  //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
-                                _______ ,_______ ,        _______ ,_______ 
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
@@ -152,9 +170,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUM] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
-              KC_DOT  ,KC_0    ,KC_1    ,                          KC_7    ,KC_8    ,KC_9    ,
+              GUI_DOT ,ALT_0   ,CTL_1   ,                          CTL_7   ,ALT_8   ,GUI_9   ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     KC_MINS ,KC_PPLS ,KC_2    ,NAV_3   ,                          KC_4    ,KC_5    ,KC_6    ,KC_EQL  ,
+     KC_MINS ,SYM_PLS ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
                                 SPC_SFT ,OS_SFT  ,        TO_ALP1 ,KC_LCTL 
   //                           └────────┴────────┘       └────────┴────────┘
@@ -186,7 +204,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
      KC_TAB  ,KC_DEL  ,C(KC_Z) ,SRN_SHT ,                          TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
-                                S_ENAV  ,KC_LALT ,        TO_ALP1 ,KC_LCTL 
+                                S_E_NAV ,KC_LALT ,        TO_ALP1 ,KC_LCTL 
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
@@ -212,9 +230,22 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+bool _num_word_enabled = false;
+
+void activate_num_word(void) {
+    _num_word_enabled = true;
+    layer_on(_NUMWORD);
+}
+
+void deactivate_num_word(void) {
+    _num_word_enabled = false;
+    layer_off(_NUMWORD);
+}
+
 enum combo_events {
   CAPS_COMBO,
-  NUMBER_WORD,
+  NUM_WORD_ON,
+  NUM_WORD_OFF,
   TOGGLE_NAV,
   FUNCTION_LAYER,
   COMBO_LENGTH
@@ -222,17 +253,21 @@ enum combo_events {
 uint16_t COMBO_LEN = COMBO_LENGTH;
 
 const uint16_t PROGMEM caps_word[] = {NAV_N   ,SYM1_E  ,SYM2_A, COMBO_END};
-const uint16_t PROGMEM num_word[] = {NAV_T   ,SYM1_R  ,SYM2_S, COMBO_END};
+const uint16_t PROGMEM num_word_on[] = {NAV_T   ,SYM1_R  ,SYM2_S, COMBO_END};
+const uint16_t PROGMEM num_word_off[] = {SYM_PLS ,SYM_2 ,NAV_3, COMBO_END};
 const uint16_t PROGMEM toggle_nav[] = {CTL_H   ,ALT_U   ,GUI_O, COMBO_END};
 const uint16_t PROGMEM function_layer[] = {NAV_N   ,SYM1_E  ,SYM2_A, NUM_C, COMBO_END};
 combo_t key_combos[] = {
     [CAPS_COMBO] = COMBO_ACTION(caps_word),
     COMBO(toggle_nav, TO(_NAV)),
-    COMBO(num_word, TO(_NUM)),
+    [NUM_WORD_ON] = COMBO_ACTION(num_word_on),
+    [NUM_WORD_OFF] = COMBO_ACTION(num_word_off),
     [FUNCTION_LAYER] = COMBO_ACTION(function_layer),
 };
 
+
 uint8_t function_mods;
+
 void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
     case CAPS_COMBO:
@@ -240,6 +275,11 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         caps_word_toggle();  // Activate Caps Word!
       }
       break;
+    case NUM_WORD_ON:
+        if (pressed) {
+            activate_num_word();
+        }
+        break;
     case FUNCTION_LAYER:
       if (pressed) {
         function_mods = get_mods();
@@ -270,6 +310,44 @@ bool caps_word_press_user(uint16_t keycode) {
         default:
             return false;  // Deactivate Caps Word.
     }
+}
+
+bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
+    if (!_num_word_enabled) return true;
+
+    switch (keycode) {
+        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+        case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
+        case QK_TAP_DANCE ... QK_TAP_DANCE_MAX:
+            if (record->tap.count == 0)
+                return true;
+            keycode = keycode & 0xFF;
+    }
+    switch (keycode) {
+        case KC_1 ... KC_0:
+        case KC_PERC:
+        case KC_COMM:
+        case KC_DOT:
+        case KC_SLSH:
+        case KC_MINS:
+        case KC_ASTR:
+        case KC_PLUS:
+        case KC_COLN:
+        case KC_EQL:
+        case KC_UNDS:
+        case KC_BSPC:
+        case KC_X:
+        case REPEAT:
+        case REV_REP:
+        case KC_ENT:
+        case XXXXXXX:
+            break;
+        default:
+            if (record->event.pressed) {
+                deactivate_num_word();
+            }
+    }
+    return true;
 }
 
 #define GET_TAP_KC(dual_role_key) dual_role_key & 0xFF
@@ -355,6 +433,10 @@ void update_one_key_layer_flags(keyrecord_t *record) {
 bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint16_t enav_timer;
 
+    if (!process_num_word(keycode, record)) {
+        return false;
+    }
+
     switch (keycode) {
         case OK_SAL2:
             if(record->event.pressed) {
@@ -384,7 +466,7 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             return register_tap_hold(keycode, LCTL(KC_BSPC), record);
         case TH_COPY:
             return register_tap_hold(COPY, PASTE, record);
-        case S_ENAV:
+        case S_E_NAV:
             if(record->event.pressed){
                 enav_timer = timer_read();
                 register_mods(MOD_LSFT);
