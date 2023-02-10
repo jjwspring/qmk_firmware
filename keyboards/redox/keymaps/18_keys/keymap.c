@@ -448,14 +448,15 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case QK_TAP_DANCE ... QK_TAP_DANCE_MAX:
             if (record->tap.count == 0) {
             // key held
-                SEND_STRING("key held");
+                // SEND_STRING("key held");
                 return true;
             } else if (record->event.pressed) {
-                SEND_STRING("tap pressed");
+                // SEND_STRING("tap pressed");
+                return true;
             } else {
-                SEND_STRING("tap released");
+                // SEND_STRING("tap released");
+                keycode = keycode & 0xFF;
             }
-            keycode = keycode & 0xFF;
     }
     switch (keycode) {
         case KC_1 ... KC_0:
@@ -479,9 +480,9 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
             // Don't disable for above keycodes
             break;
         default:
-            if (record->event.pressed) {
+            // if (record->event.pressed) {
                 deactivate_num_word();
-            }
+            // }
     }
     return true;
 }
