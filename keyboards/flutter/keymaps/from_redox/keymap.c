@@ -319,8 +319,14 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case QK_MOD_TAP ... QK_MOD_TAP_MAX:
         case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
         case QK_TAP_DANCE ... QK_TAP_DANCE_MAX:
-            if (record->tap.count == 0)
+            if (record->tap.count == 0) {
+                SEND_STRING("key held");
                 return true;
+            } else if (record->event.pressed) {
+                SEND_STRING("tap pressed");
+            } else {
+                SEND_STRING("tap released");
+            }
             keycode = keycode & 0xFF;
     }
     switch (keycode) {
@@ -331,7 +337,7 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case KC_SLSH:
         case KC_MINS:
         case KC_ASTR:
-        case KC_PLUS:
+        case KC_PPLS:
         case KC_COLN:
         case KC_EQL:
         case KC_UNDS:
