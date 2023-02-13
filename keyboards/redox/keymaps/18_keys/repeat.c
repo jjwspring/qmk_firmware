@@ -95,7 +95,7 @@ void update_reverse_repeat_key(keyrecord_t *record) {
         update_reverse_key_pairs(KC_TAB, S(KC_TAB), record);
         /* Undo and redo */
         update_reverse_key_pairs(C(KC_Z), C(KC_Y), record);
-        update_reverse_key_pairs(KC_H, C(KC_R), record);
+        update_reverse_key_pairs(KC_U, C(KC_R), record);
         /* Page jumping in vim*/
         update_reverse_key_pairs(C(KC_F), C(KC_B), record);
         update_reverse_key_pairs(C(KC_U), C(KC_D), record);
@@ -103,8 +103,8 @@ void update_reverse_repeat_key(keyrecord_t *record) {
         update_reverse_key_pairs(KC_W, KC_B, record);
         update_reverse_key_pairs(S(KC_W), S(KC_B), record);
         /* Arrow keys in vim */
-        update_reverse_key_pairs(KC_A, KC_N, record);
-        update_reverse_key_pairs(KC_U, KC_E, record);
+        update_reverse_key_pairs(KC_J, KC_K, record);
+        update_reverse_key_pairs(KC_L, KC_H, record);
 
         update_reverse_key_pairs_any_mods(KC_PGUP, KC_PGDN, record);
         update_reverse_key_pairs_any_mods(KC_UP, KC_DOWN, record);
