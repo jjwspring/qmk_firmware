@@ -407,6 +407,11 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
             activate_num_word();
         }
         break;
+    case NUM_WORD_OFF:
+        if (pressed) {
+            deactivate_num_word();
+        }
+        break;
     case FUNCTION_LAYER:
       if (pressed) {
         function_mods = get_mods();
@@ -428,6 +433,7 @@ bool caps_word_press_user(uint16_t keycode) {
         case KC_BSPC:
         case KC_DEL:
         case KC_UNDS:
+        case KC_MINS:
         case REPEAT:
         case OK_SAL2:
         case OK_ALP2:
