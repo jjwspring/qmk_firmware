@@ -155,7 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
      KC_Q    ,KC_J    ,KC_P    ,NAV_K   ,                          KC_B    ,KC_DOT  ,KC_X    ,KC_Y    ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
-                                OS_SFT  ,REV_REP ,        XXXXXXX ,XXXXXXX 
+                                OS_SFT  ,REV_REP ,        XXXXXXX ,TO_ALP1 
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
@@ -281,6 +281,11 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
             activate_num_word();
         }
         break;
+    case NUM_WORD_OFF:
+        if (pressed) {
+            deactivate_num_word();
+        }
+        break;
     case FUNCTION_LAYER:
       if (pressed) {
         function_mods = get_mods();
@@ -302,6 +307,7 @@ bool caps_word_press_user(uint16_t keycode) {
         case KC_BSPC:
         case KC_DEL:
         case KC_UNDS:
+        case KC_MINS:
         case REPEAT:
         case OK_SAL2:
         case OK_ALP2:
@@ -337,6 +343,7 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case KC_MINS:
         case KC_ASTR:
         case KC_PPLS:
+        case KC_CIRC:
         case KC_COLN:
         case KC_EQL:
         case KC_UNDS:
