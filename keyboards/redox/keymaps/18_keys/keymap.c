@@ -186,7 +186,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_MINS ,SYM_PLS ,SYM_2   ,NAV_3   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    SPC_SFT ,OS_SFT  ,        TO_ALP1 ,OK_ALP2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    SPC_SFT ,OS_SFT  ,        OK_SAL2 ,OK_ALP2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -483,6 +483,9 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case REV_REP:
         case KC_ENT:
         case COM_SPC:
+        case OK_ALP2:
+        case OK_SAL2:
+        case TO_ALP1:
         case XXXXXXX:
             // Don't disable for above keycodes
             break;
@@ -661,11 +664,10 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
         case TH_COPY:
             return register_tap_hold(COPY, PASTE, record);
         case COM_SPC:
-            if (record->pressed) {
+            if (record->event.pressed) {
                 SEND_STRING(", ");
-                register_key_to_repeat(KC_COMM)
             }
-            return false;
+            return true;
         // case SPC_SFT:
         //     if (record->tap.count && record->event.pressed) {
         //         // Space has been sent
