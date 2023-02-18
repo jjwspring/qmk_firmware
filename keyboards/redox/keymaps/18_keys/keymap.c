@@ -186,7 +186,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_MINS ,SYM_PLS ,SYM_2   ,NAV_3   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    SPC_SFT ,OS_SFT  ,        OK_SAL2 ,OK_ALP2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    SPC_SFT ,REPEAT  ,        OK_SAL2 ,OK_ALP2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -375,6 +375,12 @@ enum combo_events {
   NUM_WORD_OFF,
   TOGGLE_NAV,
   FUNCTION_LAYER,
+  GREATER_EQUAL,
+  LESS_EQUAL,
+  NOT_EQUAL,
+  APPROX_EQUAL,
+  PLUS_EQUAL,
+  MINUS_EQUAL,
   COMBO_LENGTH
 };
 uint16_t COMBO_LEN = COMBO_LENGTH;
@@ -384,12 +390,25 @@ const uint16_t PROGMEM num_word_on[] = {NAV_T   ,SYM1_R  ,SYM2_S, COMBO_END};
 const uint16_t PROGMEM num_word_off[] = {SYM_PLS ,SYM_2 ,NAV_3, COMBO_END};
 const uint16_t PROGMEM toggle_nav[] = {CTL_H   ,ALT_U   ,GUI_O, COMBO_END};
 const uint16_t PROGMEM function_layer[] = {NAV_N   ,SYM1_E  ,SYM2_A, NUM_C, COMBO_END};
+const uint16_t PROGMEM greater_equal[] = {KC_GTHN, KC_RBRC, COMBO_END};
+const uint16_t PROGMEM less_equal[] = {KC_LTHN, KC_LBRC, COMBO_END};
+const uint16_t PROGMEM not_equal[] = {KC_EXLM, KC_QST, COMBO_END};
+const uint16_t PROGMEM approx_equal[] = {KC_PIPE, KC_PND, COMBO_END};
+const uint16_t PROGMEM plus_equal[] = {SYM_PLS, GUI_DOT, COMBO_END};
+const uint16_t PROGMEM minus_equal[] = {KC_MINS, KC_NUHS, COMBO_END};
+
 combo_t key_combos[] = {
     [CAPS_COMBO] = COMBO_ACTION(caps_word),
     COMBO(toggle_nav, TO(_NAV)),
     [NUM_WORD_ON] = COMBO_ACTION(num_word_on),
     [NUM_WORD_OFF] = COMBO_ACTION(num_word_off),
     [FUNCTION_LAYER] = COMBO_ACTION(function_layer),
+    [GREATER_EQUAL] = COMBO_ACTION(greater_equal),
+    [LESS_EQUAL] = COMBO_ACTION(less_equal),
+    [NOT_EQUAL] = COMBO_ACTION(not_equal),
+    [APPROX_EQUAL] = COMBO_ACTION(approx_equal),
+    [PLUS_EQUAL] = COMBO_ACTION(plus_equal),
+    [MINUS_EQUAL] = COMBO_ACTION(minus_equal)
 };
 
 
@@ -397,6 +416,42 @@ uint8_t function_mods;
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
+    case GREATER_EQUAL:
+      if (pressed) {
+        tap_code16(KC_GTHN);
+        tap_code16(KC_EQL);
+      }
+      break;
+    case LESS_EQUAL:
+      if (pressed) {
+        tap_code16(KC_LTHN);
+        tap_code16(KC_EQL);
+      }
+      break;
+    case NOT_EQUAL:
+      if (pressed) {
+        tap_code16(KC_EXLM);
+        tap_code16(KC_EQL);
+      }
+      break;
+    case APPROX_EQUAL:
+      if (pressed) {
+        tap_code16(KC_PIPE);
+        tap_code16(KC_EQL);
+      }
+      break;
+    case PLUS_EQUAL:
+      if (pressed) {
+        tap_code16(KC_PLUS);
+        tap_code16(KC_EQL);
+      }
+      break;
+    case MINUS_EQUAL:
+      if (pressed) {
+        tap_code16(KC_MINS);
+        tap_code16(KC_EQL);
+      }
+      break;
     case CAPS_COMBO:
       if (pressed) {
         caps_word_toggle();  // Activate Caps Word!
