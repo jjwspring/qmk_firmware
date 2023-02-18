@@ -22,6 +22,7 @@ enum custom_keycodes {
   S_E_NAV,
   OK_SAL2,
   OK_ALP2,
+  COM_SPC,
   APP_1,
   APP_2,
   APP_3,
@@ -160,7 +161,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_SFT_ALPHA_2] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
-              SFT_V   ,SFT_W   ,SFT_M   ,                          SFT_F   ,KC_QUOT ,SFT_Z   ,
+              SFT_V   ,SFT_W   ,SFT_M   ,                          SFT_F   ,COM_SPC ,SFT_Z   ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
      SFT_Q   ,SFT_J   ,SFT_P   ,SFT_K   ,                          SFT_B   ,KC_COMM ,SFT_X   ,SFT_Y   ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
@@ -346,6 +347,7 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case REPEAT:
         case REV_REP:
         case KC_ENT:
+        case COM_SPC:
         case XXXXXXX:
             break;
         default:
@@ -472,6 +474,12 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             return register_tap_hold(keycode, LCTL(KC_BSPC), record);
         case TH_COPY:
             return register_tap_hold(COPY, PASTE, record);
+        case COM_SPC:
+            if (record->pressed) {
+                SEND_STRING(", ");
+                register_key_to_repeat(KC_COMM)
+            }
+            return false;
         case S_E_NAV:
             if(record->event.pressed){
                 enav_timer = timer_read();
