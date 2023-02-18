@@ -381,6 +381,8 @@ enum combo_events {
   APPROX_EQUAL,
   PLUS_EQUAL,
   MINUS_EQUAL,
+  ARROW,
+  DOUBLE_ARROW,
   COMBO_LENGTH
 };
 uint16_t COMBO_LEN = COMBO_LENGTH;
@@ -396,6 +398,8 @@ const uint16_t PROGMEM not_equal[] = {KC_EXLM, KC_QST, COMBO_END};
 const uint16_t PROGMEM approx_equal[] = {KC_PIPE, KC_PND, COMBO_END};
 const uint16_t PROGMEM plus_equal[] = {SYM_PLS, GUI_DOT, COMBO_END};
 const uint16_t PROGMEM minus_equal[] = {KC_MINS, KC_NUHS, COMBO_END};
+const uint16_t PROGMEM arrow[] = {KC_MINS, KC_NUBS, COMBO_END};
+const uint16_t PROGMEM double_arrow[] = {KC_EQL, SYM_6, COMBO_END};
 
 combo_t key_combos[] = {
     [CAPS_COMBO] = COMBO_ACTION(caps_word),
@@ -408,7 +412,9 @@ combo_t key_combos[] = {
     [NOT_EQUAL] = COMBO_ACTION(not_equal),
     [APPROX_EQUAL] = COMBO_ACTION(approx_equal),
     [PLUS_EQUAL] = COMBO_ACTION(plus_equal),
-    [MINUS_EQUAL] = COMBO_ACTION(minus_equal)
+    [MINUS_EQUAL] = COMBO_ACTION(minus_equal),
+    [ARROW] = COMBO_ACTION(arrow),
+    [DOUBLE_ARROW] = COMBO_ACTION(double_arrow),
 };
 
 
@@ -450,6 +456,18 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       if (pressed) {
         tap_code16(KC_MINS);
         tap_code16(KC_EQL);
+      }
+      break;
+    case ARROW:
+      if (pressed) {
+        tap_code16(KC_MINS);
+        tap_code16(KC_GTHN);
+      }
+      break;
+    case DOUBLE_ARROW:
+      if (pressed) {
+        tap_code16(KC_EQL);
+        tap_code16(KC_GTHN);
       }
       break;
     case CAPS_COMBO:
