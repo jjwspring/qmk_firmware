@@ -36,6 +36,7 @@ enum custom_keycodes {
   S_E_NAV,
   OK_SAL2,
   OK_ALP2,
+  COM_SPC,
   APP_1,
   APP_2,
   APP_3,
@@ -224,7 +225,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,SFT_V   ,SFT_W   ,SFT_M   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,SFT_F   ,KC_QUOT ,SFT_Z   ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,SFT_V   ,SFT_W   ,SFT_M   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,SFT_F   ,COM_SPC ,SFT_Z   ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,SFT_Q   ,SFT_J   ,SFT_P   ,SFT_K   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,SFT_B   ,KC_COMM ,SFT_X   ,SFT_Y   ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
@@ -473,6 +474,7 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case REPEAT:
         case REV_REP:
         case KC_ENT:
+        case COM_SPC:
         case XXXXXXX:
             // Don't disable for above keycodes
             break;
@@ -650,6 +652,12 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             return register_tap_hold(keycode, LCTL(KC_BSPC), record);
         case TH_COPY:
             return register_tap_hold(COPY, PASTE, record);
+        case COM_SPC:
+            if (record->pressed) {
+                SEND_STRING(", ");
+                register_key_to_repeat(KC_COMM)
+            }
+            return false;
         // case SPC_SFT:
         //     if (record->tap.count && record->event.pressed) {
         //         // Space has been sent
