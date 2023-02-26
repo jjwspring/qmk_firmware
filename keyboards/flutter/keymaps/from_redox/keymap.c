@@ -479,21 +479,7 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
 
 
 
-void process_repeat_key(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode)
-    {
-    case REPEAT:
-        update_repeat_key(record);
-        break;
-    case REV_REP:
-        update_reverse_repeat_key(record);
-        break;
-    default:
-        if (record->event.pressed){
-            register_key_to_repeat(keycode);
-        }
-    }
-}
+
 
 void dynamic_macro_play_user(int8_t direction) {
     /* Sets the last_keycode_j to DM_PLYX after the dynamic macro has finished playing*/
@@ -509,16 +495,6 @@ void dynamic_macro_play_user(int8_t direction) {
 }
 
 
-void app_switch(uint16_t keycode, const keyrecord_t *record) {
-    if (record->event.pressed) {
-      register_code(KC_LGUI);
-      tap_code(keycode);
-      last_keycode_j = keycode;
-      last_modifier = 0;
-    } else {
-      unregister_code(KC_LGUI);
-    }
-}
 
 bool register_tap_hold(uint16_t tap_keycode, uint16_t hold_keycode, keyrecord_t *record) {
     if (record->tap.count && record->event.pressed) {
@@ -621,6 +597,7 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             /* Registering repeat for play is done in */
             return false;
         case REPEAT:
+            /* When pressed with a modifier REPEAT acts as a oneshot swap hands layer which also turns the modifiers to one shot mods */
             if (record->event.pressed){
                 if (!mod_state) {
                     modified_repeat = false;
@@ -630,6 +607,8 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
                 } else {
                     modified_repeat = true;
                     post_process_keycode = REPEAT;
+                    /* One shot layer is done in post_process_record_user to avoid process action deactiviting the one shot layer
+                       on the press on the REPEAT key */
                     return true;
                 }
             } else {
@@ -680,17 +659,15 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
         deactivate_alpha_2 = false;
         }
     }
-    switch (post_process_keycode)
-    {
-    case REPEAT:
-        if (record->event.pressed) {
-            set_oneshot_layer(_ONE_HAND, ONESHOT_START);
-            add_oneshot_mods(mod_state);
-        }
-        break;
-
-    default:
-        break;
+    switch (post_process_keycode) {
+        case REPEAT:
+            if (record->event.pressed) {
+                set_oneshot_layer(_ONE_HAND, ONESHOT_START);
+                add_oneshot_mods(mod_state);
+            }
+            break;
+        default:
+            break;
     }
     post_process_keycode = KC_NO;
 }

@@ -521,13 +521,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         caps_word_toggle();  // Activate Caps Word!
       }
       break;
-    // case RIGHT_HAND:
-    //     if (pressed) {
-    //         post_process_keycode = REPEAT;
-    //     } else {
-    //         clear_oneshot_layer_state(ONESHOT_PRESSED);
-    //     }
-    //     break;
     case NUM_WORD_ON:
         if (pressed) {
             activate_num_word();
@@ -625,71 +618,22 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
 
 
 
-void process_repeat_key(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode)
-    {
-    case REPEAT:
-        update_repeat_key(record);
-        break;
-    case REV_REP:
-        update_reverse_repeat_key(record);
-        break;
-    default:
-        if (record->event.pressed){
-            register_key_to_repeat(keycode);
-        }
-    }
-}
 // void process_repeat_key(uint16_t keycode, keyrecord_t *record) {
-//   if (keycode != REPEAT) {
-//     switch (keycode) {
-//       case QK_MODS ... QK_MODS_MAX:
-//         if (GET_TAP_KC(keycode)) break; // if keycode is modified in keymap treat as a normal keycode
-//       case QK_DEF_LAYER ... QK_DEF_LAYER_MAX:
-//       case QK_MOMENTARY ... QK_MOMENTARY_MAX:
-//       case QK_LAYER_MOD ... QK_LAYER_MOD_MAX:
-//       case QK_ONE_SHOT_LAYER ... QK_ONE_SHOT_LAYER_MAX:
-//       case QK_TOGGLE_LAYER ... QK_TOGGLE_LAYER_MAX:
-//       case QK_TO ... QK_TO_MAX:
-//       case QK_LAYER_TAP_TOGGLE ... QK_LAYER_TAP_TOGGLE_MAX:
-//         return;
-//     }
-//     if (record->event.pressed) {
-//       if(is_caps_word_on()){
-//         last_modifier = get_mods() | get_oneshot_mods() | MOD_BIT(KC_LSFT);
-//       } else {
-//         last_modifier = get_mods() | get_oneshot_mods();
-//       }
-//       switch (keycode) {
-//         case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
-//         case QK_MOD_TAP ... QK_MOD_TAP_MAX:
-//           last_keycode_j = GET_TAP_KC(keycode);
-//           break;
-//         default:
-//           last_keycode_j = keycode;
-//           break;
-//         }
-//     }
-//   } else { // keycode == REPEAT
-//     switch (last_keycode_j)
+//     switch (keycode)
 //     {
-//     case DM_PLY1:
-//     case DM_PLY2:
-//     /* Running the dynamic macro has to be processed*/
-//         process_dynamic_macro(last_keycode_j, record);
+//     case REPEAT:
+//         update_repeat_key(record);
+//         break;
+//     case REV_REP:
+//         update_reverse_repeat_key(record);
 //         break;
 //     default:
-//         if (record->event.pressed) {
-//             pressed_keycode = last_keycode_j;
-//             register_mods(last_modifier);
-//             register_code16(pressed_keycode);
-//             unregister_mods(last_modifier);
-//         } else {
-//             unregister_code16(pressed_keycode);
+//         if (record->event.pressed){
+//             register_key_to_repeat(keycode);
 //         }
 //     }
-//   }
 // }
+
 
 void dynamic_macro_play_user(int8_t direction) {
     /* Sets the last_keycode_j to DM_PLYX after the dynamic macro has finished playing*/
@@ -705,16 +649,16 @@ void dynamic_macro_play_user(int8_t direction) {
 }
 
 
-void app_switch(uint16_t keycode, const keyrecord_t *record) {
-    if (record->event.pressed) {
-      register_code(KC_LGUI);
-      tap_code(keycode);
-      last_keycode_j = keycode;
-      last_modifier = 0;
-    } else {
-      unregister_code(KC_LGUI);
-    }
-}
+// void app_switch(uint16_t keycode, const keyrecord_t *record) {
+//     if (record->event.pressed) {
+//       register_code(KC_LGUI);
+//       tap_code(keycode);
+//       last_keycode_j = keycode;
+//       last_modifier = 0;
+//     } else {
+//       unregister_code(KC_LGUI);
+//     }
+// }
 
 bool register_tap_hold(uint16_t tap_keycode, uint16_t hold_keycode, keyrecord_t *record) {
     if (record->tap.count && record->event.pressed) {
@@ -825,17 +769,7 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             /* Registering repeat for play is done in */
             return false;
         case REPEAT:
-            // if (record->event.pressed) {
-            //     // add_oneshot_mods(MOD_BIT(KC_LSFT));
-            //     // set_oneshot_layer(_ONE_HAND, ONESHOT_START);
-            //     post_process_keycode = REPEAT;
-            //     return true;
-            // } else {
-            //     // SEND_STRING("b");
-            //     clear_oneshot_layer_state(ONESHOT_PRESSED);
-            //     // SEND_STRING("c");
-            //     return false;
-            // }
+            /* When pressed with a modifier REPEAT acts as a oneshot swap hands layer which also turns the modifiers to one shot mods */
             if (record->event.pressed){
                 if (!mod_state) {
                     modified_repeat = false;
@@ -844,21 +778,17 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
                     return false;
                 } else {
                     modified_repeat = true;
-                    // SEND_STRING("e");
-                    // set_oneshot_layer(_ONE_HAND, ONESHOT_START);
-                    // SEND_STRING("f");
-                    // add_oneshot_mods(mod_state);
                     post_process_keycode = REPEAT;
+                    /* One shot layer is done in post_process_record_user to avoid process action deactiviting the one shot layer
+                       on the press on the REPEAT key */
                     return true;
                 }
             } else {
                 if (modified_repeat) {
-                    // SEND_STRING("b");
                     clear_oneshot_layer_state(ONESHOT_PRESSED);
                     modified_repeat = false;
                     return true;
                 } else {
-                    // SEND_STRING("d");
                     update_repeat_key(record);
                     post_process_record_user(keycode, record);
                     return false;
@@ -874,17 +804,6 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-// layer_state_t layer_state_set_user(layer_state_t state) {
-//     switch (get_highest_layer(state)) {
-//         case _ONE_HAND:
-//             SEND_STRING("o");
-//             break;
-//         case _ALPHA_1:
-//             SEND_STRING("a");
-//             break;
-//     }
-//     return state;
-// }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
@@ -912,17 +831,15 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
         deactivate_alpha_2 = false;
         }
     }
-    switch (post_process_keycode)
-    {
-    case REPEAT:
-        if (record->event.pressed) {
-            set_oneshot_layer(_ONE_HAND, ONESHOT_START);
-            add_oneshot_mods(mod_state);
-        }
-        break;
-
-    default:
-        break;
+    switch (post_process_keycode) {
+        case REPEAT:
+            if (record->event.pressed) {
+                set_oneshot_layer(_ONE_HAND, ONESHOT_START);
+                add_oneshot_mods(mod_state);
+            }
+            break;
+        default:
+            break;
     }
     post_process_keycode = KC_NO;
 }
