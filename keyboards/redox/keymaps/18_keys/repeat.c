@@ -29,7 +29,7 @@ void register_key_to_repeat(uint16_t keycode) {
             return;
         case QK_MOD_TAP ... QK_MOD_TAP_MAX:
         case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
-            keycode = keycode & 0xFF;
+            keycode = keycode & 0xFF;  //todo: this registers the tap code of a tap_hold modifier even if the modifier is held
             break;
     }
 

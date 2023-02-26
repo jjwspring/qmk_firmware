@@ -1,23 +1,39 @@
 #include QMK_KEYBOARD_H
 #include "repeat.h"
 
+#define GET_TAP_KC(dual_role_key) dual_role_key & 0xFF
+uint16_t last_keycode_j = KC_NO;
+uint8_t last_modifier = 0;
+uint16_t pressed_keycode = KC_NO;
+uint16_t post_process_keycode = KC_NO;
+
+uint8_t function_mods;
+
+uint8_t mod_state;
+bool alpha_2_active = false;
+bool sft_alpha_2_active = false;
+bool deactivate_alpha_2 = false;
+bool deactivate_sft_alpha_2 = false;
+
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
-#define _ALPHA_1 0
-#define _NUMWORD 1
-#define _ALPHA_2 2
-#define _LHAND 3
-#define _SFT_ALPHA_2 4
-#define _NUM 5
-#define _SYM_1 6
-#define _SYM_2 7
-#define _NAV 8
-#define _FUN 9
-#define _RHAND 10
-#define _RNAV 11
-#define _RNUM 12
+#define _ALPHA_1        0
+#define _ONE_HAND       1
+#define _NUMWORD        2
+#define _ALPHA_2        3
+#define _RALPHA_2       4
+#define _LHAND          5
+#define _SFT_ALPHA_2    6
+#define _NUM            7
+#define _SYM_1          8
+#define _SYM_2          9
+#define _NAV            10
+#define _FUN            11
+#define _RHAND          12
+#define _RNAV           13
+#define _RNUM           14
 
 
 enum custom_keycodes {
@@ -49,7 +65,8 @@ enum custom_keycodes {
   APP_0
 };
 // Shortcut to make keymap more readable
-// #define ALPHA_2 OSL(_ALPHA_2)
+#define OS_ALP2 OSL(_ALPHA_2)
+#define OS_RAL2 OSL(_RALPHA_2)
 #define A_SFT_2 OSL(_SFT_ALPHA_2)
 #define OS_SFT  OSM(MOD_LSFT)
 
@@ -166,13 +183,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
      XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_TAB  ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,KC_ENT  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,SFT_Z   ,GUI_L   ,ALT_G   ,CTL_D   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,CTL_H   ,ALT_U   ,GUI_O   ,KC_BSPC ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,NUM_I   ,SYM2_S  ,SYM1_R  ,NAV_T   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,NAV_N   ,SYM1_E  ,SYM2_A  ,NUM_C   ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,REPEAT  ,        OK_SAL2 ,OK_ALP2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
+
+  [_ONE_HAND] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,GUI_O   ,ALT_U   ,CTL_H   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,CTL_H   ,ALT_U   ,GUI_O   ,KC_BSPC ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,NUM_C   ,SYM2_A  ,SYM1_E  ,NAV_N   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,NAV_N   ,SYM1_E  ,SYM2_A  ,NUM_C   ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    OS_ALP2 ,OS_RAL2 ,        OK_SAL2 ,OK_ALP2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -204,6 +235,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
+  [_RALPHA_2] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,GUI_Z   ,ALT_QOT ,CTL_F   ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,CTL_F   ,ALT_QOT ,GUI_Z   ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,KC_Y    ,KC_X    ,KC_DOT  ,KC_B    ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_B    ,KC_DOT  ,KC_X    ,KC_Y    ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    TO_ALP1 ,REV_REP ,        XXXXXXX ,TO_ALP1 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
 //  [_LHAND] = LAYOUT(
 //  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
 //     KC_ESC  ,APP_1   ,APP_2   ,APP_3   ,APP_4   ,APP_5   ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
@@ -374,6 +418,7 @@ enum combo_events {
   NUM_WORD_ON,
   NUM_WORD_OFF,
   TOGGLE_NAV,
+  RIGHT_HAND,
   FUNCTION_LAYER,
   GREATER_EQUAL,
   LESS_EQUAL,
@@ -391,6 +436,7 @@ const uint16_t PROGMEM caps_word[] = {NAV_N   ,SYM1_E  ,SYM2_A, COMBO_END};
 const uint16_t PROGMEM num_word_on[] = {NAV_T   ,SYM1_R  ,SYM2_S, COMBO_END};
 const uint16_t PROGMEM num_word_off[] = {SYM_PLS ,SYM_2 ,NAV_3, COMBO_END};
 const uint16_t PROGMEM toggle_nav[] = {CTL_H   ,ALT_U   ,GUI_O, COMBO_END};
+const uint16_t PROGMEM right_hand[] = {REPEAT, KC_SPC, COMBO_END};
 const uint16_t PROGMEM function_layer[] = {NAV_N   ,SYM1_E  ,SYM2_A, NUM_C, COMBO_END};
 const uint16_t PROGMEM greater_equal[] = {KC_GTHN, KC_RBRC, COMBO_END};
 const uint16_t PROGMEM less_equal[] = {KC_LTHN, KC_LBRC, COMBO_END};
@@ -406,6 +452,7 @@ combo_t key_combos[] = {
     COMBO(toggle_nav, TO(_NAV)),
     [NUM_WORD_ON] = COMBO_ACTION(num_word_on),
     [NUM_WORD_OFF] = COMBO_ACTION(num_word_off),
+    COMBO(right_hand, OSL(_ONE_HAND)),
     [FUNCTION_LAYER] = COMBO_ACTION(function_layer),
     [GREATER_EQUAL] = COMBO_ACTION(greater_equal),
     [LESS_EQUAL] = COMBO_ACTION(less_equal),
@@ -418,7 +465,6 @@ combo_t key_combos[] = {
 };
 
 
-uint8_t function_mods;
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
@@ -475,6 +521,13 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         caps_word_toggle();  // Activate Caps Word!
       }
       break;
+    // case RIGHT_HAND:
+    //     if (pressed) {
+    //         post_process_keycode = REPEAT;
+    //     } else {
+    //         clear_oneshot_layer_state(ONESHOT_PRESSED);
+    //     }
+    //     break;
     case NUM_WORD_ON:
         if (pressed) {
             activate_num_word();
@@ -570,10 +623,6 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
     return true;
 }
 
-#define GET_TAP_KC(dual_role_key) dual_role_key & 0xFF
-uint16_t last_keycode_j = KC_NO;
-uint8_t last_modifier = 0;
-uint16_t pressed_keycode = KC_NO;
 
 
 void process_repeat_key(uint16_t keycode, keyrecord_t *record) {
@@ -681,11 +730,6 @@ bool register_tap_hold(uint16_t tap_keycode, uint16_t hold_keycode, keyrecord_t 
     }
 }
 
-uint8_t mod_state;
-bool alpha_2_active = false;
-bool sft_alpha_2_active = false;
-bool deactivate_alpha_2 = false;
-bool deactivate_sft_alpha_2 = false;
 
 void update_one_key_layer_flags(keyrecord_t *record) {
     if (record->event.pressed){
@@ -702,6 +746,7 @@ void update_one_key_layer_flags(keyrecord_t *record) {
 
 bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint16_t enav_timer;
+    static bool modified_repeat;
 
     if (!process_num_word(keycode, record)) {
         return false;
@@ -780,8 +825,45 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             /* Registering repeat for play is done in */
             return false;
         case REPEAT:
-            update_repeat_key(record);
-            post_process_record_user(keycode, record);
+            // if (record->event.pressed) {
+            //     // add_oneshot_mods(MOD_BIT(KC_LSFT));
+            //     // set_oneshot_layer(_ONE_HAND, ONESHOT_START);
+            //     post_process_keycode = REPEAT;
+            //     return true;
+            // } else {
+            //     // SEND_STRING("b");
+            //     clear_oneshot_layer_state(ONESHOT_PRESSED);
+            //     // SEND_STRING("c");
+            //     return false;
+            // }
+            if (record->event.pressed){
+                if (!mod_state) {
+                    modified_repeat = false;
+                    update_repeat_key(record);
+                    post_process_record_user(keycode, record);
+                    return false;
+                } else {
+                    modified_repeat = true;
+                    // SEND_STRING("e");
+                    // set_oneshot_layer(_ONE_HAND, ONESHOT_START);
+                    // SEND_STRING("f");
+                    // add_oneshot_mods(mod_state);
+                    post_process_keycode = REPEAT;
+                    return true;
+                }
+            } else {
+                if (modified_repeat) {
+                    // SEND_STRING("b");
+                    clear_oneshot_layer_state(ONESHOT_PRESSED);
+                    modified_repeat = false;
+                    return true;
+                } else {
+                    // SEND_STRING("d");
+                    update_repeat_key(record);
+                    post_process_record_user(keycode, record);
+                    return false;
+                }
+            }
             return false;
         case REV_REP:
             update_reverse_repeat_key(record);
@@ -792,9 +874,21 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+// layer_state_t layer_state_set_user(layer_state_t state) {
+//     switch (get_highest_layer(state)) {
+//         case _ONE_HAND:
+//             SEND_STRING("o");
+//             break;
+//         case _ALPHA_1:
+//             SEND_STRING("a");
+//             break;
+//     }
+//     return state;
+// }
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-    mod_state = get_mods();
+    mod_state = get_mods() | get_oneshot_mods();
     update_one_key_layer_flags(record);
 
     bool res = _process_record_user(keycode, record);
@@ -818,4 +912,17 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
         deactivate_alpha_2 = false;
         }
     }
+    switch (post_process_keycode)
+    {
+    case REPEAT:
+        if (record->event.pressed) {
+            set_oneshot_layer(_ONE_HAND, ONESHOT_START);
+            add_oneshot_mods(mod_state);
+        }
+        break;
+
+    default:
+        break;
+    }
+    post_process_keycode = KC_NO;
 }
