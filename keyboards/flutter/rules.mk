@@ -23,3 +23,4 @@ MOUSEKEY_ENABLE = yes
 TAP_DANCE_ENABLE = yes
 COMBO_ENABLE = yes
 
+POINTING_DEVICE_DRIVER = pimoroni_trackball
