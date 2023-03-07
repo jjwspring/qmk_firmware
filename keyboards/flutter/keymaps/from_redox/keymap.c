@@ -68,9 +68,9 @@ enum custom_keycodes {
 #define GUI_V   LGUI_T(KC_V)
 #define GUI_Z   RGUI_T(KC_Z)
 #define SPC_SFT LSFT_T(KC_SPC)
-#define GUI_DOT LGUI_T(KC_DOT)
-#define ALT_0   LALT_T(KC_0)
-#define CTL_1   LCTL_T(KC_1)
+#define GUI_DOT LGUI_T(KC_PPLS)
+#define ALT_0   LALT_T(KC_DOT)
+#define CTL_1   LCTL_T(KC_0)
 #define CTL_7   RCTL_T(KC_7)
 #define ALT_8   LALT_T(KC_8)
 #define GUI_9   RGUI_T(KC_9)
@@ -85,7 +85,7 @@ enum custom_keycodes {
 #define SYM2_A  LT(_SYM_2, KC_A)
 #define NUM_C   LT(_NUM, KC_C)
 
-#define SYM_PLS LT(_SYM_2, KC_PPLS)
+#define SYM_PLS LT(_SYM_2, KC_1)
 #define SYM_2   LT(_SYM_1, KC_2)
 #define NAV_3   LT(_NAV, KC_3)
 #define NAV_4   LT(_NAV, KC_4)
@@ -239,9 +239,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NAV] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
-              KC_ESC  ,TH_COPY ,KC_APP  ,                          KC_DEL  ,TH_UP   ,TH_BSPC ,
+              KC_ESC  ,KC_DEL  ,KC_APP  ,                          KC_DEL  ,TH_UP   ,TH_BSPC ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     KC_TAB  ,KC_DEL  ,C(KC_Z) ,SRN_SHT ,                          TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,
+     KC_TAB  ,C(KC_Z) ,TH_COPY ,SRN_SHT ,                          TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
                                 S_E_NAV ,KC_LALT ,        TO_ALP1 ,KC_LCTL 
   //                           └────────┴────────┘       └────────┴────────┘
@@ -258,6 +258,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 
 };
+
+
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+void pointing_device_init_user(void) {
+    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+}
+#endif
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
