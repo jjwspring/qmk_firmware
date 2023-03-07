@@ -134,16 +134,6 @@ enum custom_keycodes {
 
 
 
-enum {
-  U_SP = 0,
-  DOT,
-  CLN
-};
-qk_tap_dance_action_t tap_dance_actions[] = {
-  [U_SP] = ACTION_TAP_DANCE_DOUBLE(KC_UNDS, KC_SPC),
-  [DOT] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_COMM),
-  [CLN] = ACTION_TAP_DANCE_DOUBLE(KC_COLON, KC_SEMICOLON)
-};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -259,6 +249,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+
+void set_auto_mouse_enable(bool);
 
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 void pointing_device_init_user(void) {

@@ -166,16 +166,16 @@ enum custom_keycodes {
 //#define APP_0 LGUI(KC_0)
 
 
-enum {
-  U_SP = 0,
-  DOT,
-  CLN
-};
-qk_tap_dance_action_t tap_dance_actions[] = {
-  [U_SP] = ACTION_TAP_DANCE_DOUBLE(KC_UNDS, KC_SPC),
-  [DOT] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_COMM),
-  [CLN] = ACTION_TAP_DANCE_DOUBLE(KC_COLON, KC_SEMICOLON)
-};
+// enum {
+//   U_SP = 0,
+//   DOT,
+//   CLN
+// };
+// qk_tap_dance_action_t tap_dance_actions[] = {
+//   [U_SP] = ACTION_TAP_DANCE_DOUBLE(KC_UNDS, KC_SPC),
+//   [DOT] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_COMM),
+//   [CLN] = ACTION_TAP_DANCE_DOUBLE(KC_COLON, KC_SEMICOLON)
+// };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
