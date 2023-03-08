@@ -250,13 +250,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
-void set_auto_mouse_enable(bool);
-
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 void pointing_device_init_user(void) {
+    #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+    #endif
+    #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
+    pimoroni_trackball_set_rgbw(50, 0, 0, 25);
+    #endif
 }
-#endif
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
