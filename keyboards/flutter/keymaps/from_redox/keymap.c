@@ -16,20 +16,21 @@ bool deactivate_alpha_2 = false;
 bool deactivate_sft_alpha_2 = false;
 
 #define _ALPHA_1        0
-#define _ONE_HAND       1
-#define _NUMWORD        2
-#define _ALPHA_2        3
-#define _RALPHA_2       4
-#define _LHAND          5
-#define _SFT_ALPHA_2    6
-#define _NUM            7
-#define _SYM_1          8
-#define _SYM_2          9
-#define _NAV            10
-#define _FUN            11
-#define _RHAND          12
-#define _RNAV           13
-#define _RNUM           14
+#define _BUTTON         1
+#define _ONE_HAND       2
+#define _NUMWORD        3
+#define _ALPHA_2        4
+#define _RALPHA_2       5
+#define _LHAND          6
+#define _SFT_ALPHA_2    7
+#define _NUM            8
+#define _SYM_1          9
+#define _SYM_2          10
+#define _NAV            11
+#define _FUN            12
+#define _RHAND          13
+#define _RNAV           14
+#define _RNUM           15
 
 
 enum custom_keycodes {
@@ -39,6 +40,7 @@ enum custom_keycodes {
   OK_SAL2,
   OK_ALP2,
   COM_SPC,
+  SCROLL,
   APP_1,
   APP_2,
   APP_3,
@@ -147,6 +149,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
+  [_BUTTON] = LAYOUT(
+  //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
+              KC_ESC  ,KC_DEL  ,KC_APP  ,                          KC_DEL  ,TH_UP   ,TH_BSPC ,
+  //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
+     KC_TAB  ,C(KC_Z) ,TH_COPY ,KC_BTN1 ,                          TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,
+  //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
+                                S_E_NAV ,SCROLL  ,        TO_ALP1 ,KC_LCTL 
+  //                           └────────┴────────┘       └────────┴────────┘
+  ),
+
   [_ONE_HAND] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
               GUI_O   ,ALT_U   ,CTL_H   ,                          CTL_H   ,ALT_U   ,GUI_O   ,
@@ -248,16 +260,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 
 };
+bool set_scrolling = false;
 
+#if defined(POINTING_DEVICE_DRIVER_pimoroni_trackball)
 
 void pointing_device_init_user(void) {
     #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
     #endif
     #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
-    pimoroni_trackball_set_rgbw(50, 0, 0, 25);
+    pimoroni_trackball_set_rgbw(50, 50, 0, 25);
     #endif
 }
+
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+    if (set_scrolling) {
+        mouse_report.h = mouse_report.x;
+        mouse_report.v = mouse_report.y;
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
+    return mouse_report;
+}
+#endif
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -627,6 +652,13 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             update_reverse_repeat_key(record);
             post_process_record_user(keycode, record);
             return false;
+        case SCROLL:
+            if (record->event.pressed) {
+                set_scrolling = !set_scrolling;
+            } else {
+                set_scrolling = false;
+            }
+            return true;
         default:
             return true;
     }

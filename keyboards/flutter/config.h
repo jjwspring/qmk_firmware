@@ -39,9 +39,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_FORCE_HOLD
 
 #define POINTING_DEVICE_ROTATION_90
-#define MOUSE_EXTENDED_REPORT
 // in config.h:
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 // only required if not setting mouse layer elsewhere
-#define AUTO_MOUSE_DEFAULT_LAYER 10
+#define AUTO_MOUSE_DEFAULT_LAYER 1
 

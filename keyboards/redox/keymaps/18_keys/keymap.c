@@ -20,20 +20,21 @@ bool deactivate_sft_alpha_2 = false;
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
 #define _ALPHA_1        0
-#define _ONE_HAND       1
-#define _NUMWORD        2
-#define _ALPHA_2        3
-#define _RALPHA_2       4
-#define _LHAND          5
-#define _SFT_ALPHA_2    6
-#define _NUM            7
-#define _SYM_1          8
-#define _SYM_2          9
-#define _NAV            10
-#define _FUN            11
-#define _RHAND          12
-#define _RNAV           13
-#define _RNUM           14
+#define _BUTTON         1
+#define _ONE_HAND       2
+#define _NUMWORD        3
+#define _ALPHA_2        4
+#define _RALPHA_2       5
+#define _LHAND          6
+#define _SFT_ALPHA_2    7
+#define _NUM            8
+#define _SYM_1          9
+#define _SYM_2          10
+#define _NAV            11
+#define _FUN            12
+#define _RHAND          13
+#define _RNAV           14
+#define _RNUM           15
 
 
 enum custom_keycodes {
@@ -53,6 +54,7 @@ enum custom_keycodes {
   OK_SAL2,
   OK_ALP2,
   COM_SPC,
+  SCROLL,
   APP_1,
   APP_2,
   APP_3,
@@ -190,6 +192,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      XXXXXXX ,NUM_I   ,SYM2_S  ,SYM1_R  ,NAV_T   ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,NAV_N   ,SYM1_E  ,SYM2_A  ,NUM_C   ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    KC_SPC  ,REPEAT  ,        OK_SAL2 ,OK_ALP2 ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
+
+  [_BUTTON] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,DM_REC1 ,                          DM_REC2 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,KC_ESC  ,KC_DEL  ,KC_APP  ,XXXXXXX ,DM_PLY1 ,                          DM_PLY2 ,XXXXXXX ,KC_DEL  ,TH_UP   ,TH_BSPC ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,KC_TAB  ,C(KC_Z) ,TH_COPY ,KC_BTN1 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    S_E_NAV ,SCROLL  ,        TO_ALP1 ,KC_LCTL ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -390,7 +406,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  ),
 
 };
+bool set_scrolling = false;
 
+#if defined(POINTING_DEVICE_DRIVER_pimoroni_trackball)
 
 // in keymap.c:
 void pointing_device_init_user(void) {
@@ -398,9 +416,20 @@ void pointing_device_init_user(void) {
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
     #endif
     #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
-    pimoroni_trackball_set_rgbw(50, 0, 0, 25);
+    pimoroni_trackball_set_rgbw(50, 50, 0, 25);
     #endif
 }
+
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+    if (set_scrolling) {
+        mouse_report.h = mouse_report.x;
+        mouse_report.v = mouse_report.y;
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
+    return mouse_report;
+}
+#endif
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -810,6 +839,13 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             update_reverse_repeat_key(record);
             post_process_record_user(keycode, record);
             return false;
+        case SCROLL:
+            if (record->event.pressed) {
+                set_scrolling = !set_scrolling;
+            } else {
+                set_scrolling = false;
+            }
+            return true;
         default:
             return true;
     }
