@@ -44,3 +44,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // only required if not setting mouse layer elsewhere
 #define AUTO_MOUSE_DEFAULT_LAYER 1
 
+#define POINTING_DEVICE_GESTURES_CURSOR_GLIDE_ENABLE
+#define PIMORONI_TRACKBALL_SCALE 1

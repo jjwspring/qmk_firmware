@@ -279,6 +279,9 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
         mouse_report.v = mouse_report.y;
         mouse_report.x = 0;
         mouse_report.y = 0;
+    } else {
+        mouse_report.x = mouse_report.x * mouse_report.x * mouse_report.x ;
+        mouse_report.y = mouse_report.y * mouse_report.y * mouse_report.y ;
     }
     return mouse_report;
 }
@@ -489,7 +492,6 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case KC_X:
         case REPEAT:
         case REV_REP:
-        case KC_ENT:
         case COM_SPC:
         case OK_ALP2:
         case OK_SAL2:
