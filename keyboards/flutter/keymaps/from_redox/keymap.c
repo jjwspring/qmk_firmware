@@ -280,8 +280,16 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
         mouse_report.x = 0;
         mouse_report.y = 0;
     } else {
-        mouse_report.x = mouse_report.x * mouse_report.x * mouse_report.x ;
-        mouse_report.y = mouse_report.y * mouse_report.y * mouse_report.y ;
+        if (abs(mouse_report.x) > 1)
+        {
+            mouse_report.x *= 5;
+        }
+
+        if (abs(mouse_report.y) > 1)
+        {
+            mouse_report.y *= 5;
+        }
+
     }
     return mouse_report;
 }
