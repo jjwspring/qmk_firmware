@@ -16,9 +16,9 @@ bool deactivate_alpha_2 = false;
 bool deactivate_sft_alpha_2 = false;
 
 #define _ALPHA_1        0
-#define _BUTTON         1
-#define _ONE_HAND       2
-#define _NUMWORD        3
+#define _BUTTON         3
+#define _ONE_HAND       1
+#define _NUMWORD        2
 #define _ALPHA_2        4
 #define _RALPHA_2       5
 #define _LHAND          6
@@ -70,9 +70,9 @@ enum custom_keycodes {
 #define GUI_V   LGUI_T(KC_V)
 #define GUI_Z   RGUI_T(KC_Z)
 #define SPC_SFT LSFT_T(KC_SPC)
-#define GUI_DOT LGUI_T(KC_PPLS)
-#define ALT_0   LALT_T(KC_DOT)
-#define CTL_1   LCTL_T(KC_0)
+#define GUI_PLS LGUI_T(KC_PPLS)
+#define ALT_DOT LALT_T(KC_DOT)
+#define CTL_0   LCTL_T(KC_0)
 #define CTL_7   RCTL_T(KC_7)
 #define ALT_8   LALT_T(KC_8)
 #define GUI_9   RGUI_T(KC_9)
@@ -87,7 +87,7 @@ enum custom_keycodes {
 #define SYM2_A  LT(_SYM_2, KC_A)
 #define NUM_C   LT(_NUM, KC_C)
 
-#define SYM_PLS LT(_SYM_2, KC_1)
+#define SYM_1   LT(_SYM_2, KC_1)
 #define SYM_2   LT(_SYM_1, KC_2)
 #define NAV_3   LT(_NAV, KC_3)
 #define NAV_4   LT(_NAV, KC_4)
@@ -171,9 +171,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUMWORD] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
-              GUI_DOT ,ALT_0   ,CTL_1   ,                          CTL_7   ,ALT_8   ,GUI_9   ,
+              GUI_PLS ,ALT_DOT ,CTL_0   ,                          CTL_7   ,ALT_8   ,GUI_9   ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     KC_MINS ,SYM_PLS ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,
+     KC_MINS ,SYM_1   ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
                                 SPC_SFT ,REPEAT  ,        OK_SAL2 ,OK_ALP2 
   //                           └────────┴────────┘       └────────┴────────┘
@@ -211,9 +211,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUM] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
-              GUI_DOT ,ALT_0   ,CTL_1   ,                          CTL_7   ,ALT_8   ,GUI_9   ,
+              GUI_PLS ,ALT_DOT ,CTL_0   ,                          CTL_7   ,ALT_8   ,GUI_9   ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     KC_MINS ,SYM_PLS ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,
+     KC_MINS ,SYM_1   ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
                                 SPC_SFT ,OS_SFT  ,        TO_ALP1 ,KC_LCTL 
   //                           └────────┴────────┘       └────────┴────────┘
@@ -251,9 +251,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_FUN] = LAYOUT(
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
-              KC_F11  ,KC_F10  ,KC_F1   ,                          KC_F7   ,KC_F8   ,KC_F9   ,
+              KC_F10  ,KC_F11  ,KC_F12  ,                          KC_F7   ,KC_F8   ,KC_F9   ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     QK_BOOT ,KC_F12  ,KC_F2   ,KC_F3   ,                          KC_F4   ,KC_F5   ,KC_F6   ,XXXXXXX ,
+     QK_BOOT ,KC_F1   ,KC_F2   ,KC_F3   ,                          KC_F4   ,KC_F5   ,KC_F6   ,XXXXXXX ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
                                 DM_PLY1 ,DM_REC1 ,        DM_REC2 ,DM_PLY2 
   //                           └────────┴────────┘       └────────┴────────┘
@@ -271,6 +271,15 @@ void pointing_device_init_user(void) {
     #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
     pimoroni_trackball_set_rgbw(50, 50, 0, 25);
     #endif
+}
+
+bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
+    switch(keycode) {
+        case SCROLL:
+            return true;
+        default:
+            return false;
+    }
 }
 
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
@@ -330,6 +339,7 @@ enum combo_events {
   APPROX_EQUAL,
   PLUS_EQUAL,
   MINUS_EQUAL,
+  AST_EQUAL,
   ARROW,
   DOUBLE_ARROW,
   COMBO_LENGTH
@@ -338,7 +348,7 @@ uint16_t COMBO_LEN = COMBO_LENGTH;
 
 const uint16_t PROGMEM caps_word[] = {NAV_N   ,SYM1_E  ,SYM2_A, COMBO_END};
 const uint16_t PROGMEM num_word_on[] = {NAV_T   ,SYM1_R  ,SYM2_S, COMBO_END};
-const uint16_t PROGMEM num_word_off[] = {SYM_PLS ,SYM_2 ,NAV_3, COMBO_END};
+const uint16_t PROGMEM num_word_off[] = {SYM_1 ,SYM_2 ,NAV_3, COMBO_END};
 const uint16_t PROGMEM toggle_nav[] = {CTL_H   ,ALT_U   ,GUI_O, COMBO_END};
 const uint16_t PROGMEM right_hand[] = {REPEAT, KC_SPC, COMBO_END};
 const uint16_t PROGMEM function_layer[] = {NAV_N   ,SYM1_E  ,SYM2_A, NUM_C, COMBO_END};
@@ -346,8 +356,9 @@ const uint16_t PROGMEM greater_equal[] = {KC_GTHN, KC_RBRC, COMBO_END};
 const uint16_t PROGMEM less_equal[] = {KC_LTHN, KC_LBRC, COMBO_END};
 const uint16_t PROGMEM not_equal[] = {KC_EXLM, KC_QST, COMBO_END};
 const uint16_t PROGMEM approx_equal[] = {KC_PIPE, KC_PND, COMBO_END};
-const uint16_t PROGMEM plus_equal[] = {SYM_PLS, GUI_DOT, COMBO_END};
+const uint16_t PROGMEM plus_equal[] = {SYM_1, GUI_PLS, COMBO_END};
 const uint16_t PROGMEM minus_equal[] = {KC_MINS, KC_NUHS, COMBO_END};
+const uint16_t PROGMEM ast_equal[] = {KC_ASTR, KC_ATS, COMBO_END};
 const uint16_t PROGMEM arrow[] = {KC_MINS, KC_NUBS, COMBO_END};
 const uint16_t PROGMEM double_arrow[] = {KC_EQL, SYM_6, COMBO_END};
 
@@ -364,6 +375,7 @@ combo_t key_combos[] = {
     [APPROX_EQUAL] = COMBO_ACTION(approx_equal),
     [PLUS_EQUAL] = COMBO_ACTION(plus_equal),
     [MINUS_EQUAL] = COMBO_ACTION(minus_equal),
+    [AST_EQUAL] = COMBO_ACTION(ast_equal),
     [ARROW] = COMBO_ACTION(arrow),
     [DOUBLE_ARROW] = COMBO_ACTION(double_arrow),
 };
@@ -399,6 +411,12 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
     case PLUS_EQUAL:
       if (pressed) {
         tap_code16(KC_PLUS);
+        tap_code16(KC_EQL);
+      }
+      break;
+    case AST_EQUAL:
+      if (pressed) {
+        tap_code16(KC_ASTR);
         tap_code16(KC_EQL);
       }
       break;
@@ -495,7 +513,6 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
         case KC_CIRC:
         case KC_COLN:
         case KC_EQL:
-        case KC_UNDS:
         case KC_BSPC:
         case KC_X:
         case REPEAT:
@@ -664,7 +681,7 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case SCROLL:
             if (record->event.pressed) {
-                set_scrolling = !set_scrolling;
+                set_scrolling = true;
             } else {
                 set_scrolling = false;
             }
