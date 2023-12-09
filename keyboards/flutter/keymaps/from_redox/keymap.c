@@ -36,6 +36,7 @@ bool deactivate_sft_alpha_2 = false;
 enum custom_keycodes {
   REPEAT = SAFE_RANGE,
   REV_REP,
+  RESET,
   S_E_NAV,
   OK_SAL2,
   OK_ALP2,
@@ -77,6 +78,7 @@ enum custom_keycodes {
 #define ALT_8   LALT_T(KC_8)
 #define GUI_9   RGUI_T(KC_9)
 
+#define NUM_MIN LT(_NUM, KC_MINS)
 #define NUM_I   LT(_NUM, KC_I)
 #define SYM2_S  LT(_SYM_2, KC_S)
 #define SYM1_R  LT(_SYM_1, KC_R)
@@ -86,6 +88,7 @@ enum custom_keycodes {
 #define SYM1_E  LT(_SYM_1, KC_E)
 #define SYM2_A  LT(_SYM_2, KC_A)
 #define NUM_C   LT(_NUM, KC_C)
+#define NUM_EQL LT(_NUM, KC_EQL)
 
 #define SYM_1   LT(_SYM_2, KC_1)
 #define SYM_2   LT(_SYM_1, KC_2)
@@ -173,7 +176,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
               GUI_PLS ,ALT_DOT ,CTL_0   ,                          CTL_7   ,ALT_8   ,GUI_9   ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     KC_MINS ,SYM_1   ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,
+     NUM_MIN ,SYM_1   ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,NUM_EQL ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
                                 SPC_SFT ,REPEAT  ,        OK_SAL2 ,OK_ALP2 
   //                           └────────┴────────┘       └────────┴────────┘
@@ -205,7 +208,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
      SFT_Q   ,SFT_J   ,SFT_P   ,SFT_K   ,                          SFT_B   ,KC_COMM ,SFT_X   ,SFT_Y   ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
-                                KC_UNDS ,TO_ALP1 ,        REPEAT  ,XXXXXXX 
+                                KC_UNDS ,RESET   ,        REPEAT  ,XXXXXXX 
   //                           └────────┴────────┘       └────────┴────────┘
   ),
 
@@ -213,7 +216,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //         ┌────────┬────────┬────────┐                         ┌────────┬────────┬────────┐
               GUI_PLS ,ALT_DOT ,CTL_0   ,                          CTL_7   ,ALT_8   ,GUI_9   ,
   //┌────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┐
-     KC_MINS ,SYM_1   ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,KC_EQL  ,
+     NUM_MIN ,SYM_1   ,SYM_2   ,NAV_3   ,                          NAV_4   ,SYM_5   ,SYM_6   ,NUM_EQL ,
   //└────────┴────────┴────────┼────────┼────────┐       ┌────────┼────────┼────────┴────────┴────────┘
                                 SPC_SFT ,OS_SFT  ,        OK_SAL2 ,KC_LCTL 
   //                           └────────┴────────┘       └────────┴────────┘
@@ -327,9 +330,10 @@ void deactivate_num_word(void) {
 }
 
 enum combo_events {
-  CAPS_COMBO,
-  NUM_WORD_ON,
-  NUM_WORD_OFF,
+  CAPS_COMBO_1,
+  CAPS_COMBO_2,
+  NUM_WORD_ON_1,
+  NUM_WORD_ON_2,
   RIGHT_HAND,
   FUNCTION_LAYER,
   GREATER_EQUAL,
@@ -345,9 +349,10 @@ enum combo_events {
 };
 uint16_t COMBO_LEN = COMBO_LENGTH;
 
-const uint16_t PROGMEM caps_word[] = {NAV_N   ,SYM1_E  ,SYM2_A, COMBO_END};
-const uint16_t PROGMEM num_word_on[] = {NAV_T   ,SYM1_R  ,SYM2_S, COMBO_END};
-const uint16_t PROGMEM num_word_off[] = {SYM_1 ,SYM_2 ,NAV_3, COMBO_END};
+const uint16_t PROGMEM caps_word_1[] = {NAV_N   ,SYM1_E  ,SYM2_A, COMBO_END};
+const uint16_t PROGMEM caps_word_2[] = {NAV_4   ,SYM_5   ,SYM_6  , COMBO_END};
+const uint16_t PROGMEM num_word_on_1[] = {NAV_T   ,SYM1_R  ,SYM2_S, COMBO_END};
+const uint16_t PROGMEM num_word_on_2[] = {SYM_1 ,SYM_2 ,NAV_3, COMBO_END};
 const uint16_t PROGMEM right_hand[] = {REPEAT, KC_SPC, COMBO_END};
 const uint16_t PROGMEM function_layer[] = {NAV_N   ,SYM1_E  ,SYM2_A, NUM_C, COMBO_END};
 const uint16_t PROGMEM greater_equal[] = {KC_GTHN, KC_RBRC, COMBO_END};
@@ -358,12 +363,13 @@ const uint16_t PROGMEM plus_equal[] = {SYM_1, GUI_PLS, COMBO_END};
 const uint16_t PROGMEM minus_equal[] = {KC_MINS, KC_NUHS, COMBO_END};
 const uint16_t PROGMEM ast_equal[] = {KC_ASTR, KC_ATS, COMBO_END};
 const uint16_t PROGMEM arrow[] = {KC_MINS, KC_NUBS, COMBO_END};
-const uint16_t PROGMEM double_arrow[] = {KC_EQL, SYM_6, COMBO_END};
+const uint16_t PROGMEM double_arrow[] = {NUM_EQL, SYM_6, COMBO_END};
 
 combo_t key_combos[] = {
-    [CAPS_COMBO] = COMBO_ACTION(caps_word),
-    [NUM_WORD_ON] = COMBO_ACTION(num_word_on),
-    [NUM_WORD_OFF] = COMBO_ACTION(num_word_off),
+    [CAPS_COMBO_1] = COMBO_ACTION(caps_word_1),
+    [CAPS_COMBO_2] = COMBO_ACTION(caps_word_2),
+    [NUM_WORD_ON_1] = COMBO_ACTION(num_word_on_1),
+    [NUM_WORD_ON_2] = COMBO_ACTION(num_word_on_2),
     COMBO(right_hand, OSL(_ONE_HAND)),
     [FUNCTION_LAYER] = COMBO_ACTION(function_layer),
     [GREATER_EQUAL] = COMBO_ACTION(greater_equal),
@@ -435,19 +441,18 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         tap_code16(KC_GTHN);
       }
       break;
-    case CAPS_COMBO:
+    case CAPS_COMBO_1:
+    case CAPS_COMBO_2:
       if (pressed) {
-        caps_word_toggle();  // Activate Caps Word!
+        deactivate_num_word();
+        caps_word_on();  // Activate Caps Word!
       }
       break;
-    case NUM_WORD_ON:
+    case NUM_WORD_ON_1:
+    case NUM_WORD_ON_2:
         if (pressed) {
+            caps_word_off();
             activate_num_word();
-        }
-        break;
-    case NUM_WORD_OFF:
-        if (pressed) {
-            deactivate_num_word();
         }
         break;
     case FUNCTION_LAYER:
@@ -582,6 +587,13 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
+        case RESET:
+            if(record->event.pressed){
+                layer_clear();
+                return true;
+            } else {
+                return true;
+            }
         case OK_SAL2:
             if(record->event.pressed) {
                 layer_on(_SFT_ALPHA_2);
