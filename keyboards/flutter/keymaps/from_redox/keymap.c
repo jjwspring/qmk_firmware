@@ -281,6 +281,10 @@ void set_trackball_color(color col) {
             pimoroni_trackball_set_rgbw(0, 0, 0, 255);
         case RECORD:
             pimoroni_trackball_set_rgbw(255, 0, 0, 0);
+        case NUM:
+            pimoroni_trackball_set_rgbw(0, 255, 0, 0);
+        case CAPS:
+            pimoroni_trackball_set_rgbw(0, 0, 255, 0);
     }
 }
 #endif
