@@ -267,12 +267,30 @@ bool set_scrolling = false;
 
 #if defined(POINTING_DEVICE_DRIVER_pimoroni_trackball)
 
+typedef enum {
+    BASE,
+    NUM,
+    CAPS,
+    RECORD
+} color;
+
+#ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
+void set_trackball_color(color col) {
+    switch (col) {
+        case BASE:
+            pimoroni_trackball_set_rgbw(0, 0, 0, 255);
+        case RECORD:
+            pimoroni_trackball_set_rgbw(255, 0, 0, 0);
+    }
+}
+#endif
+
 void pointing_device_init_user(void) {
     #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
     #endif
     #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
-    pimoroni_trackball_set_rgbw(50, 50, 0, 25);
+    pimoroni_trackball_set_rgbw(0, 0, 0, 255);
     #endif
 }
 
@@ -537,6 +555,7 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
 
 void dynamic_macro_play_user(int8_t direction) {
     /* Sets the last_keycode_j to DM_PLYX after the dynamic macro has finished playing*/
+    send_string(" PLAY_RECORDING_SET_LAST_TO_PLAY ");
     switch (direction)
     {
     case +1:
@@ -548,6 +567,21 @@ void dynamic_macro_play_user(int8_t direction) {
     }
 }
 
+void dynamic_macro_record_start_user(void) {
+    #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
+    set_trackball_color(RECORD);
+    #endif
+    send_string(" START_RECORDING_SET_LAST_TO_STP ");
+    register_key_to_repeat(DM_RSTP);
+}
+
+void dynamic_macro_record_end_user(int8_t direction) {
+    #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
+    set_trackball_color(BASE);
+    #endif
+    send_string(" END_RECORDING_SET_LAST_TO_XXX ");
+    register_key_to_repeat(XXXXXXX);
+}
 
 
 bool register_tap_hold(uint16_t tap_keycode, uint16_t hold_keycode, keyrecord_t *record) {
@@ -649,13 +683,15 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 return true;
             }
-        case DM_PLY1:
-        case DM_PLY2:
         case DM_REC1:
         case DM_REC2:
+            send_string(" CASE_REC_PROCESS_USER ");
+        case DM_PLY1:
+        case DM_PLY2:
+            send_string(" CASE_PLAY_PROCESS_USER ");
         /* Releases DM keys on the one shot layer so they are only sent to process_dynamic_macro() once */
             unregister_code16(keycode);
-            /* Registering repeat for play is done in */
+            /* Registering repeat for play is done in *dynamic_macro_play_user()*/
             return false;
         case REPEAT:
             /* When pressed with a modifier REPEAT acts as a oneshot swap hands layer which also turns the modifiers to one shot mods */
