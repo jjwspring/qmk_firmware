@@ -267,6 +267,8 @@ bool set_scrolling = false;
 
 #if defined(POINTING_DEVICE_DRIVER_pimoroni_trackball)
 
+bool set_scroll = false;
+
 typedef enum {
     BASE_COL,
     NUM_COL,
@@ -707,6 +709,16 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed){
                 if (!mod_state) {
                     modified_repeat = false;
+                    #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
+                    if (set_scroll) {
+                        if (record->event.pressed) {
+                            set_scrolling = true;
+                        } else {
+                            set_scrolling = false;
+                        }
+                        return false;
+                    }
+                    #endif
                     update_repeat_key(record);
                     post_process_record_user(keycode, record);
                     return false;
@@ -783,4 +795,15 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
     }
     post_process_keycode = KC_NO;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+    case _BUTTON:
+        #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
+        set_scroll = true;
+        #endif
+        break;
+    }
+    return state;
 }
