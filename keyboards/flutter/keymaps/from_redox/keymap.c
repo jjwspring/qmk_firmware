@@ -577,7 +577,6 @@ void register_dm_play_to_repeat(int8_t direction) {
 
 void dynamic_macro_play_user(int8_t direction) {
     /* Sets the last_keycode_j to DM_PLYX after the dynamic macro has finished playing*/
-    send_string(" PLAY_RECORDING_SET_LAST_TO_PLAY ");
     register_dm_play_to_repeat(direction);
 }
 
@@ -585,7 +584,6 @@ void dynamic_macro_record_start_user(void) {
     #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
     set_trackball_color(RECORD_COL);
     #endif
-    send_string(" START_RECORDING_SET_LAST_TO_STP ");
     register_key_to_repeat(DM_RSTP);
 }
 
@@ -593,7 +591,6 @@ void dynamic_macro_record_end_user(int8_t direction) {
     #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
     set_trackball_color(BASE_COL);
     #endif
-    send_string(" END_RECORDING_SET_LAST_TO_XXX ");
     register_dm_play_to_repeat(direction);
 }
 
@@ -699,10 +696,8 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case DM_REC1:
         case DM_REC2:
-            send_string(" CASE_REC_PROCESS_USER ");
         case DM_PLY1:
         case DM_PLY2:
-            send_string(" CASE_PLAY_PROCESS_USER ");
         /* Releases DM keys on the one shot layer so they are only sent to process_dynamic_macro() once */
             unregister_code16(keycode);
             /* Registering repeat for play is done in *dynamic_macro_play_user()*/

@@ -58,16 +58,17 @@ void update_repeat_key(keyrecord_t *record) {
         case DM_PLY1:
         case DM_PLY2:
         /* Running the dynamic macro has to be processed not just registered */
-        send_string(" REPEAT_PRESSED_LASTKEY_PLY ");
+            // send_string(" REPEAT_PRESSED_LASTKEY_PLY ");
             process_dynamic_macro(last_keycode, record);
             break;
         case DM_RSTP:
-            send_string(" REPEAT_PRESSED_LASTKEY_STOP ");
+            // send_string(" REPEAT_PRESSED_LASTKEY_STOP ");
             process_dynamic_macro(last_keycode, record);
             break;
         case DM_REC1:
         case DM_REC2:
-            send_string(" REPEAT_PRESSED_LASTKEY_REC ");
+            // send_string(" REPEAT_PRESSED_LASTKEY_REC ");
+            break;
         default:
             update_key(last_keycode, record);
     }
