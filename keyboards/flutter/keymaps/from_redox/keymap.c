@@ -268,23 +268,27 @@ bool set_scrolling = false;
 #if defined(POINTING_DEVICE_DRIVER_pimoroni_trackball)
 
 typedef enum {
-    BASE,
-    NUM,
-    CAPS,
-    RECORD
+    BASE_COL,
+    NUM_COL,
+    CAPS_COL,
+    RECORD_COL
 } color;
 
 #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
 void set_trackball_color(color col) {
     switch (col) {
-        case BASE:
+        case BASE_COL:
             pimoroni_trackball_set_rgbw(0, 0, 0, 255);
-        case RECORD:
+            break;
+        case RECORD_COL:
             pimoroni_trackball_set_rgbw(255, 0, 0, 0);
-        case NUM:
+            break;
+        case NUM_COL:
             pimoroni_trackball_set_rgbw(0, 255, 0, 0);
-        case CAPS:
+            break;
+        case CAPS_COL:
             pimoroni_trackball_set_rgbw(0, 0, 255, 0);
+            break;
     }
 }
 #endif
@@ -294,7 +298,7 @@ void pointing_device_init_user(void) {
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
     #endif
     #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
-    pimoroni_trackball_set_rgbw(0, 0, 0, 255);
+    set_trackball_color(BASE_COL);
     #endif
 }
 
@@ -344,11 +348,13 @@ bool _num_word_enabled = false;
 void activate_num_word(void) {
     _num_word_enabled = true;
     layer_on(_NUMWORD);
+    set_trackball_color(NUM_COL);
 }
 
 void deactivate_num_word(void) {
     _num_word_enabled = false;
     layer_off(_NUMWORD);
+    set_trackball_color(BASE_COL);
 }
 
 enum combo_events {
@@ -468,6 +474,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       if (pressed) {
         deactivate_num_word();
         caps_word_on();  // Activate Caps Word!
+        set_trackball_color(CAPS_COL);
       }
       break;
     case NUM_WORD_ON_1:
@@ -506,6 +513,7 @@ bool caps_word_press_user(uint16_t keycode) {
             return true;
 
         default:
+            set_trackball_color(BASE_COL);
             return false;  // Deactivate Caps Word.
     }
 }
@@ -555,11 +563,7 @@ bool process_num_word(uint16_t keycode, const keyrecord_t *record) {
 
 
 
-
-
-void dynamic_macro_play_user(int8_t direction) {
-    /* Sets the last_keycode_j to DM_PLYX after the dynamic macro has finished playing*/
-    send_string(" PLAY_RECORDING_SET_LAST_TO_PLAY ");
+void register_dm_play_to_repeat(int8_t direction) {
     switch (direction)
     {
     case +1:
@@ -571,9 +575,15 @@ void dynamic_macro_play_user(int8_t direction) {
     }
 }
 
+void dynamic_macro_play_user(int8_t direction) {
+    /* Sets the last_keycode_j to DM_PLYX after the dynamic macro has finished playing*/
+    send_string(" PLAY_RECORDING_SET_LAST_TO_PLAY ");
+    register_dm_play_to_repeat(direction);
+}
+
 void dynamic_macro_record_start_user(void) {
     #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
-    set_trackball_color(RECORD);
+    set_trackball_color(RECORD_COL);
     #endif
     send_string(" START_RECORDING_SET_LAST_TO_STP ");
     register_key_to_repeat(DM_RSTP);
@@ -581,10 +591,10 @@ void dynamic_macro_record_start_user(void) {
 
 void dynamic_macro_record_end_user(int8_t direction) {
     #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
-    set_trackball_color(BASE);
+    set_trackball_color(BASE_COL);
     #endif
     send_string(" END_RECORDING_SET_LAST_TO_XXX ");
-    register_key_to_repeat(XXXXXXX);
+    register_dm_play_to_repeat(direction);
 }
 
 
