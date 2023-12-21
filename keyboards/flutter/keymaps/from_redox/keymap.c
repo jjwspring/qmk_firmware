@@ -709,16 +709,6 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed){
                 if (!mod_state) {
                     modified_repeat = false;
-                    #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
-                    if (set_scroll) {
-                        if (record->event.pressed) {
-                            set_scrolling = true;
-                        } else {
-                            set_scrolling = false;
-                        }
-                        return false;
-                    }
-                    #endif
                     update_repeat_key(record);
                     post_process_record_user(keycode, record);
                     return false;
