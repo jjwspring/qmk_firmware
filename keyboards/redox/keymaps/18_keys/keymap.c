@@ -499,13 +499,17 @@ bool _num_word_enabled = false;
 void activate_num_word(void) {
     _num_word_enabled = true;
     layer_on(_NUMWORD);
+    #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
     set_trackball_color(NUM_COL);
+    #endif
 }
 
 void deactivate_num_word(void) {
     _num_word_enabled = false;
     layer_off(_NUMWORD);
+    #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
     set_trackball_color(BASE_COL);
+    #endif
 }
 
 enum combo_events {
@@ -628,7 +632,9 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       if (pressed) {
         deactivate_num_word();
         caps_word_on();  // Activate Caps Word!
+        #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
         set_trackball_color(CAPS_COL);
+        #endif
       }
       break;
     case NUM_WORD_ON_1:
@@ -667,7 +673,9 @@ bool caps_word_press_user(uint16_t keycode) {
             return true;
 
         default:
+            #ifdef POINTING_DEVICE_DRIVER_pimoroni_trackball
             set_trackball_color(BASE_COL);
+            #endif
             return false;  // Deactivate Caps Word.
     }
 }
