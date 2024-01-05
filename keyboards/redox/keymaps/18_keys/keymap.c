@@ -886,7 +886,7 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 unregister_mods(MOD_LSFT);
                 if (timer_elapsed(enav_timer) < TAPPING_TERM) {
-                    layer_invert(_NAV);
+                    layer_off(_NAV);
                 }
             }
             return false;
