@@ -674,7 +674,7 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
         case TH_UP:
             return register_tap_hold(keycode, KC_PGUP, record);
         case TH_BSPC:
-            return register_tap_hold(keycode, LCTL(KC_BSPC), record);
+            return register_tap_hold(LCTL(KC_BSPC), keycode, record);
         case TH_COPY:
             return register_tap_hold(COPY, PASTE, record);
         case COM_SPC:
