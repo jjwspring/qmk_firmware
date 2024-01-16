@@ -55,7 +55,7 @@ enum custom_keycodes {
   OK_SAL2,
   OK_ALP2,
   COM_SPC,
-  SCROLL,
+  SCROL,
   APP_1,
   APP_2,
   APP_3,
@@ -208,7 +208,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX ,KC_TAB  ,C(KC_Z) ,TH_COPY ,KC_BTN1 ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,XXXXXXX ,TH_LEFT ,TH_DOWN ,TH_RGHT ,KC_ENT  ,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    S_E_NAV ,SCROLL  ,        OK_SAL2 ,KC_LCTL ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+     XXXXXXX ,XXXXXXX ,XXXXXXX ,KC_APP  ,     XXXXXXX ,    S_E_NAV ,SCROL  ,        OK_SAL2 ,KC_LCTL ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -453,7 +453,7 @@ void pointing_device_init_user(void) {
 
 bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
     switch(keycode) {
-        case SCROLL:
+        case SCROL:
             return true;
         default:
             return false;
@@ -952,13 +952,13 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
             update_reverse_repeat_key(record);
             post_process_record_user(keycode, record);
             return false;
-        case SCROLL:
+        case SCROL:
             if (record->event.pressed) {
                 set_scrolling = true;
             } else {
                 set_scrolling = false;
             }
-            return true;
+            return false;
         default:
             return true;
     }
