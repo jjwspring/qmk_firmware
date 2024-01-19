@@ -834,6 +834,8 @@ bool _process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RESET:
             if(record->event.pressed){
                 layer_clear();
+                clear_mods();
+                clear_oneshot_mods();
                 return true;
             } else {
                 return true;
